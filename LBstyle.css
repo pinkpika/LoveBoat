@@ -1,0 +1,123 @@
+body{
+	margin:0px;
+}
+
+#zone{
+	position: relative;
+	width:100vw; 
+	background-color:white; 
+	overflow:hidden;
+}
+
+.sky{
+	position:absolute;
+    top:0px;
+    left:-200%;
+    z-index:1;
+
+	background-image:url('http://i.imgur.com/QXnJ37t.png');
+	background-size:50%;
+	background-repeat: repeat-x;
+
+	animation-name: movingSky;
+  	animation-timing-function: linear;
+  	animation-duration: 50000ms;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+}
+@keyframes movingSky{
+	0% { left:-200%; }
+	100%{ left:0%; }
+}
+
+
+.mountain{
+	position:absolute;
+    top:0px;
+    left:-200%;
+    z-index:1;
+
+	background-image:url('http://i.imgur.com/YYxp4lg.png');
+	background-size: 50%;
+	background-repeat: repeat-x;
+
+	animation-name: movingMountain;
+  	animation-timing-function: linear;
+  	animation-duration: 40000ms;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+}
+@keyframes movingMountain{
+	0% { left:-200%; }
+	100%{ left:0%; }
+}
+
+.flow{
+	position:absolute;
+    top:0px;
+    left:-200%;
+    z-index:4;
+
+	background-image:url('http://i.imgur.com/QtSvTdx.png');
+	background-size:50%;
+	background-repeat: repeat-x;
+
+	animation-name: movingFlow;
+  	animation-timing-function: linear;
+  	animation-duration: 10000ms;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+}
+@keyframes movingFlow{
+	0% { left:-200%; }
+	100%{ left:0%; }
+}
+
+.land{
+	position:absolute;
+    top:0px;
+    left:-200%;
+    z-index:7;
+
+	background-image:url('http://i.imgur.com/GQ7e6ZF.png');
+	background-size:50%;
+	background-repeat: repeat-x;
+
+	animation-name: movingLand;
+  	animation-timing-function: linear;
+  	animation-duration: 30000ms;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+}
+@keyframes movingLand{
+	0% { left:-200%; }
+	100%{ left:0%; }
+}
+
+.whale{
+	position:absolute;
+    top:40%;
+    left:60%;
+    z-index:5;
+
+	background-image:url('http://i.imgur.com/yhQdKlJ.png');
+	background-size:100%;
+	background-repeat: no-repeat;
+	width:30%;
+	height:50%;
+
+}
+
+.boat{
+	position:absolute;
+    top:30%;
+    left:30%;
+    z-index:6;
+
+	background-image:url('http://i.imgur.com/6kLReKO.png');
+	background-size:100%;
+	background-repeat: no-repeat;
+	width:30%;
+	height:50%;
+
+}

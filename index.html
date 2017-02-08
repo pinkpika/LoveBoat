@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>LoveBoat</title>
+<link rel="stylesheet" type="text/css" href="LBstyle.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body>
+<div id="zone">
+	<div class="sky"></div>
+  <div class="mountain"></div>
+  <div class="flow"></div>
+  <div class="land"></div>
+
+  <div class="whale"></div>
+  <div class="boat"></div>
+</div>
+
+<script>
+var zoneProportion = 2000 / 800;
+$( window ).ready(function() {
+  $( "#zone" ).height( $( "#zone" ).width() / zoneProportion );
+  $( ".mountain" ).width( $( "#zone" ).width() * 4 );
+  $( ".mountain" ).height( $( "#zone" ).height() );
+  $( ".flow" ).width( $( "#zone" ).width() * 4 );
+  $( ".flow" ).height( $( "#zone" ).height() );
+  $( ".sky" ).width( $( "#zone" ).width() * 4 );
+  $( ".sky" ).height( $( "#zone" ).height() );
+  $( ".land" ).width( $( "#zone" ).width() * 4 );
+  $( ".land" ).height( $( "#zone" ).height() );
+});
+$( window ).resize(function() {
+  $( "#zone" ).height( $( "#zone" ).width() / zoneProportion );
+  $( ".mountain" ).width( $( "#zone" ).width() * 4  );
+  $( ".mountain" ).height( $( "#zone" ).height() );
+  $( ".flow" ).width( $( "#zone" ).width() * 4 );
+  $( ".flow" ).height( $( "#zone" ).height() );
+  $( ".sky" ).width( $( "#zone" ).width() * 4 );
+  $( ".sky" ).height( $( "#zone" ).height() );
+  $( ".land" ).width( $( "#zone" ).width() * 4 );
+  $( ".land" ).height( $( "#zone" ).height() );
+});
+</script>
+
+</body>
+</html>
