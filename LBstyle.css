@@ -10,6 +10,7 @@ body{
 }
 
 .sky{
+	pointer-events: none;
 	position:absolute;
     top:0px;
     left:-200%;
@@ -32,6 +33,7 @@ body{
 
 
 .mountain{
+	pointer-events: none;
 	position:absolute;
     top:0px;
     left:-200%;
@@ -53,6 +55,7 @@ body{
 }
 
 .flow{
+	pointer-events: none;
 	position:absolute;
     top:0px;
     left:-200%;
@@ -74,6 +77,7 @@ body{
 }
 
 .land{
+	pointer-events: none;
 	position:absolute;
     top:0px;
     left:-200%;
@@ -96,18 +100,32 @@ body{
 
 .whale{
 	position:absolute;
-    top:40%;
+    top:55%; /* html .whale style */
     left:60%;
     z-index:5;
 
-	background-image:url('http://i.imgur.com/yhQdKlJ.png');
+	background-image:url('http://i.imgur.com/qkctcqU.png');
 	background-size:100%;
 	background-repeat: no-repeat;
-	width:30%;
-	height:50%;
+	width:25%;
+	height:20%;
 
 }
+.waterColumn{
+	pointer-events: none;
+	position:absolute;
+    top:45%;
+    left:62%;
+    z-index:5;
 
+	background-image:url('http://i.imgur.com/8I3egC5.png');
+	background-size:100%;
+	background-repeat: no-repeat;
+	width:10%;
+	height:32.3%;
+
+	transform: scale(1, 1);
+}
 .boat{
 	position:absolute;
     top:30%;
@@ -119,5 +137,68 @@ body{
 	background-repeat: no-repeat;
 	width:30%;
 	height:50%;
+}
+.boatLight{
+	position:absolute;
+    top:30%;
+    left:30%;
+    z-index:5;
 
+	background-image:url('http://i.imgur.com/VUy6K5Y.png');
+	background-size:100%;
+	background-repeat: no-repeat;
+	width:30%;
+	height:50%;
+
+	animation-name: boatLighting;
+  	animation-timing-function: linear;
+  	animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+@keyframes boatLighting{
+	0% { opacity: 0; }
+	100%{ opacity: 0.7; }
+}
+
+.heart0{
+	position:absolute;
+    z-index:5;
+
+    background-image:url('http://i.imgur.com/vGp6Eid.png');
+	background-size:100%;
+	background-repeat: no-repeat;
+	width:5%;
+	height:100%;
+
+	/*
+	animation-name: heartMoving;
+  	animation-timing-function: linear;
+  	animation-duration: 5000ms;
+    animation-iteration-count: finite;
+    animation-direction: normal;
+    */
+}
+@keyframes heartMoving{
+	0% { left: 0%; }
+	100%{ left: 100%; }
+}
+
+.heart1{
+	position:absolute;
+    z-index:5;
+
+    background-image:url('http://i.imgur.com/dJ5TsV7.png');
+	background-size:100%;
+	background-repeat: no-repeat;
+	width:5%;
+	height:100%;
+
+	/*
+	animation-name: heartMoving;
+  	animation-timing-function: linear;
+  	animation-duration: 5000ms;
+    animation-iteration-count: finite;
+    animation-direction: normal;
+    */
 }
