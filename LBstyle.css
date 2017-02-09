@@ -31,6 +31,19 @@ body{
 	100%{ left:0%; }
 }
 
+.star{
+	pointer-events: none;
+	position:absolute;
+    top:0%;
+    left:0%;
+    z-index:2;
+
+	background-image:url('http://i.imgur.com/lI0GV0Q.gif');
+	background-size:100%;
+	background-repeat: no-repeat;
+	width:100%;
+	height:100%;
+}
 
 .mountain{
 	pointer-events: none;
@@ -109,7 +122,6 @@ body{
 	background-repeat: no-repeat;
 	width:25%;
 	height:20%;
-
 }
 .waterColumn{
 	pointer-events: none;
