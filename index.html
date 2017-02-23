@@ -4,111 +4,43 @@
 <title>LoveBoat</title>
 <link rel="stylesheet" type="text/css" href="LBstyle.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
 </head>
 <body>
 <div id="zone">
-	
-  <div class="sky"></div>
+  <div class="allLight"></div>
+  <div class="morningSky"></div>
+  <div class="nightSky"></div>
 
   <div class="star"></div>
   <div class="mountain"></div>
   <div class="flow"></div>
+
   <div class="land"></div>
+  <div class="landClick" onclick="nodGo();"></div>
 
   <div class="whale" onclick="waterColumnUpGo();"></div>
   <div class="waterColumn"></div>
 
-  <div class="boat" style="left:30%;" onclick="boatGoGo();"></div>
-  <div class="boatLight"></div>
+  <div class="sheepZone" style="left:33%; top:54%;">
+    <div class="sheep" ></div>
+    <div class="sheepBright" ></div>
+  </div>
+
+  <div class="pinkZone" style="left:45%; top:54%;">
+    <div class="pink" ></div>
+    <div class="pinkBright" ></div>
+  </div>
+
+  <div class="boatZone" style="left:30%;">
+    <div class="boatClick" onclick="boatGoGo();"></div>
+    <div class="boatPaddle" ></div>
+    <div class="boat"></div>
+    <div class="banban" ></div>
+    <div class="flag" ></div>
+  </div>
+
 </div>
-
-<script>
-var zoneProportion = 2000 / 800;
-$( window ).ready(function() {
-  $( "#zone" ).height( $( "#zone" ).width() / zoneProportion );
-  $( ".mountain" ).width( $( "#zone" ).width() * 4 );
-  $( ".mountain" ).height( $( "#zone" ).height() );
-  $( ".flow" ).width( $( "#zone" ).width() * 4 );
-  $( ".flow" ).height( $( "#zone" ).height() );
-  $( ".sky" ).width( $( "#zone" ).width() * 4 );
-  $( ".sky" ).height( $( "#zone" ).height() );
-  $( ".land" ).width( $( "#zone" ).width() * 4 );
-  $( ".land" ).height( $( "#zone" ).height() );
-});
-$( window ).resize(function() {
-  $( "#zone" ).height( $( "#zone" ).width() / zoneProportion );
-  $( ".mountain" ).width( $( "#zone" ).width() * 4  );
-  $( ".mountain" ).height( $( "#zone" ).height() );
-  $( ".flow" ).width( $( "#zone" ).width() * 4 );
-  $( ".flow" ).height( $( "#zone" ).height() );
-  $( ".sky" ).width( $( "#zone" ).width() * 4 );
-  $( ".sky" ).height( $( "#zone" ).height() );
-  $( ".land" ).width( $( "#zone" ).width() * 4 );
-  $( ".land" ).height( $( "#zone" ).height() );
-});
-
-function setTransform (element, rotationArg, scaleArg, skewXArg, skewYArg) {
-    var transfromString = ("rotate(" + rotationArg + "deg ) scale(" + scaleArg + ") skewX(" + skewXArg + "deg ) skewY(" + skewYArg + "deg )");
-    element[0].style.transform = transfromString;
-}
-
-//-------------------------------------------------------------
-var idWaterColumnUp,idWaterColumnDown;
-var up = 1.0;
-function waterColumnUpGo(){
-  idWaterColumnUp = setTimeout(waterColumnUp, 10);
-  //idWaterColumnUp = setInterval(waterColumnUp, 10);
-}
-function waterColumnUp() {
-  if (up>5.0) {
-    clearTimeout(idWaterColumnUp);
-    //clearInterval(idWaterColumnUp);
-  } else {
-    up += 0.2; 
-    setTransform($(".waterColumn") , 0 , '1,'+up , 0 , 0 );
-    setTimeout(waterColumnUp, 10);
-  }
-}
-idWaterColumnDown = setInterval(waterColumnDown, 10);
-function waterColumnDown() {
-  if(up>1.0){
-    up -= 0.05; 
-    setTransform($(".waterColumn") , 0 , '1,'+up , 0 , 0 );
-  }
-}
-
-//-------------------------------------------------------------
-var idBoatGo,idBoatBack;
-var boatLeft = parseFloat($(".boat")[0].style.left);
-var a = 0;
-function boatGoGo(){
-  boatLeft -= 5.0;
-  $(".boat")[0].style.left = boatLeft + '%';
-  $(".boatLight")[0].style.left = boatLeft + '%';
-}
-idBoatBack = setInterval(boatBack, 10);
-function boatBack() {
-  if(boatLeft<70.0){
-    boatLeft += 0.05; 
-    $(".boat")[0].style.left = boatLeft + '%';
-    $(".boatLight")[0].style.left = boatLeft + '%';
-  }
-}
-
-//-------------------------------------------------------------
-/*
-var idCreateHeart = setInterval(createHeart, 1000);
-function createHeart() {
-  var link = ["http://i.imgur.com/vGp6Eid.png",
-  "http://i.imgur.com/dJ5TsV7.png",
-  "http://i.imgur.com/Hof5P3A.png",
-  "http://i.imgur.com/aIlxzkJ.png"];
-  var index = Math.floor(Math.random() * 2);
-  $( "#zone" ).append( "<div class='heart"+ index +"'></div>" );
-  //console.log(index);
-}
-*/
-</script>
-
+<script src="LB.js"></script>
 </body>
 </html>

@@ -3,33 +3,50 @@ body{
 }
 
 #zone{
+	max-width: 900px;
 	position: relative;
 	width:100vw; 
 	background-color:white; 
 	overflow:hidden;
 }
 
-.sky{
+.allLight{
 	pointer-events: none;
 	position:absolute;
-    top:0px;
-    left:-200%;
+    z-index:100;
+	opacity: 0.0;
+background: -moz-linear-gradient(top, rgba(104,62,109,0.75) 0%, rgba(125,185,232,0.51) 54%, rgba(255,244,229,0.33) 93%, rgba(255,244,229,0.3) 100%);
+background: -webkit-linear-gradient(top, rgba(104,62,109,0.75) 0%,rgba(125,185,232,0.51) 54%,rgba(255,244,229,0.33) 93%,rgba(255,244,229,0.3) 100%); 
+background: linear-gradient(to bottom, rgba(104,62,109,0.75) 0%,rgba(125,185,232,0.51) 54%,rgba(255,244,229,0.33) 93%,rgba(255,244,229,0.3) 100%);
+	background-size:100%;
+	width: 100%;
+	height: 100%;
+}
+.nightSky{
+	pointer-events: none;
+	position:absolute;
     z-index:1;
-
-	background-image:url('http://i.imgur.com/QXnJ37t.png');
-	background-size:50%;
-	background-repeat: repeat-x;
-
-	animation-name: movingSky;
-  	animation-timing-function: linear;
-  	animation-duration: 50000ms;
-    animation-iteration-count: infinite;
-    animation-direction: normal;
+background: -moz-linear-gradient(top, rgba(104,62,109,0.75) 0%, rgba(125,185,232,0.51) 54%, rgba(255,244,229,0.33) 93%, rgba(255,244,229,0.3) 100%);
+background: -webkit-linear-gradient(top, rgba(104,62,109,0.75) 0%,rgba(125,185,232,0.51) 54%,rgba(255,244,229,0.33) 93%,rgba(255,244,229,0.3) 100%);
+background: linear-gradient(to bottom, rgba(104,62,109,0.75) 0%,rgba(125,185,232,0.51) 54%,rgba(255,244,229,0.33) 93%,rgba(255,244,229,0.3) 100%);
+	background-size:100%;
+	width: 100%;
+	height: 100%;
+	opacity: 0.0;
 }
-@keyframes movingSky{
-	0% { left:-200%; }
-	100%{ left:0%; }
+.morningSky{
+	pointer-events: none;
+	position:absolute;
+    z-index:1;
+background: -moz-linear-gradient(top, rgba(255,155,193,1) 0%, rgba(255,158,230,1) 27%, rgba(255,241,216,1) 56%, rgba(255,250,214,0.93) 59%, rgba(255,255,255,0) 100%);
+background: -webkit-linear-gradient(top, rgba(255,155,193,1) 0%,rgba(255,158,230,1) 27%,rgba(255,241,216,1) 56%,rgba(255,250,214,0.93) 59%,rgba(255,255,255,0) 100%);
+background: linear-gradient(to bottom, rgba(255,155,193,1) 0%,rgba(255,158,230,1) 27%,rgba(255,241,216,1) 56%,rgba(255,250,214,0.93) 59%,rgba(255,255,255,0) 100%);
+	background-size:100%;
+	width: 100%;
+	height: 100%;
+	opacity: 1.0;
 }
+/*====================================================================*/
 
 .star{
 	pointer-events: none;
@@ -38,7 +55,7 @@ body{
     left:0%;
     z-index:2;
 
-	background-image:url('http://i.imgur.com/lI0GV0Q.gif');
+	background-image:url('http://i.imgur.com/jbbpSPG.gif');
 	background-size:100%;
 	background-repeat: no-repeat;
 	width:100%;
@@ -52,7 +69,7 @@ body{
     left:-200%;
     z-index:1;
 
-	background-image:url('http://i.imgur.com/YYxp4lg.png');
+	background-image:url('http://i.imgur.com/XVwrBAF.png');
 	background-size: 50%;
 	background-repeat: repeat-x;
 
@@ -74,7 +91,7 @@ body{
     left:-200%;
     z-index:4;
 
-	background-image:url('http://i.imgur.com/QtSvTdx.png');
+	background-image:url('http://i.imgur.com/1v2Gru5.png');
 	background-size:50%;
 	background-repeat: repeat-x;
 
@@ -96,7 +113,7 @@ body{
     left:-200%;
     z-index:7;
 
-	background-image:url('http://i.imgur.com/GQ7e6ZF.png');
+	background-image:url('http://i.imgur.com/dv9hRw2.png');
 	background-size:50%;
 	background-repeat: repeat-x;
 
@@ -110,14 +127,33 @@ body{
 	0% { left:-200%; }
 	100%{ left:0%; }
 }
+.landClick
+{
+	position:absolute;
+    top:80%;
+    left:0%;
+    z-index:100;
+	width:100%;
+	height:20%;
+
+}
+.nod{
+	position:absolute;
+    z-index:6;
+	background-image:url('http://i.imgur.com/LDd4k1C.gif');
+	background-size:100%;
+	background-repeat: no-repeat;
+	width:10%;
+	height:100%;
+}
 
 .whale{
 	position:absolute;
-    top:55%; /* html .whale style */
+    top:55%;
     left:60%;
     z-index:5;
 
-	background-image:url('http://i.imgur.com/qkctcqU.png');
+	background-image:url('http://i.imgur.com/6K5s214.png');
 	background-size:100%;
 	background-repeat: no-repeat;
 	width:25%;
@@ -130,87 +166,216 @@ body{
     left:62%;
     z-index:5;
 
-	background-image:url('http://i.imgur.com/8I3egC5.png');
+	background-image:url('http://i.imgur.com/pxI8pSI.png');
 	background-size:100%;
 	background-repeat: no-repeat;
 	width:10%;
-	height:32.3%;
+	height:31.9%;
 
 	transform: scale(1, 1);
 }
-.boat{
+
+/*====================================================================*/
+.boatZone{
+	pointer-events: none;
+	overflow:hidden;
 	position:absolute;
     top:30%;
     left:30%;
     z-index:6;
-
-	background-image:url('http://i.imgur.com/6kLReKO.png');
-	background-size:100%;
-	background-repeat: no-repeat;
 	width:30%;
 	height:50%;
+	transform:scale(1.0);
 }
-.boatLight{
+.boatClick{
+	pointer-events: visible;
 	position:absolute;
-    top:30%;
-    left:30%;
-    z-index:5;
-
-	background-image:url('http://i.imgur.com/VUy6K5Y.png');
+    top:80%;
+    left:0%;
+    z-index:6;
+	width:100%;
+	height:25%;
+}
+.sheepZone{
+	overflow:hidden;
+	position:absolute;
+    top:54%;
+    left:33%;
+    z-index:6;
+	width:10%;
+	height:25%;
+	transform:scale(1.0);
+}
+.sheep{
+	position:absolute;
+    top:0%;
+    left:0%;
+    z-index:6;
+	background-image:url('http://i.imgur.com/PkYtBhg.png');
 	background-size:100%;
 	background-repeat: no-repeat;
-	width:30%;
-	height:50%;
-
-	animation-name: boatLighting;
+	width:100%;
+	height:100%;
+	opacity:1.0;
+}
+.sheep:hover{
+	background-image:url('http://i.imgur.com/N4nj96o.png');
+}
+.sheepBright{
+	position:absolute;
+    top:0%;
+    left:0%;
+    z-index:5;
+	background-image:url('http://i.imgur.com/qMolVry.png');
+	background-size:100%;
+	background-repeat: no-repeat;
+	width:100%;
+	height:100%;
+	opacity:1.0;
+	animation-name: sheepBrighting;
   	animation-timing-function: linear;
   	animation-duration: 1000ms;
     animation-iteration-count: infinite;
     animation-direction: alternate;
 }
-@keyframes boatLighting{
+@keyframes sheepBrighting{
 	0% { opacity: 0; }
-	100%{ opacity: 0.7; }
+	100%{ opacity: 1.0; }
 }
+.pinkZone{
+	overflow:hidden;
+	position:absolute;
+    top:54%;
+    left:45%;
+    z-index:6;
+	width:10%;
+	height:25%;
+	transform:scale(1.0);
+}
+.pink{
+	position:absolute;
+    top:0%;
+    left:0%;
+    z-index:6;
+	background-image:url('http://i.imgur.com/Z5hkuz8.png');
+	background-size:100%;
+	background-repeat: no-repeat;
+	width:100%;
+	height:100%;
+	opacity:1.0;
+}
+.pink:hover{
+	background-image:url('http://i.imgur.com/8ymjOwl.png');
+}
+.pinkBright{
+	position:absolute;
+    top:0%;
+    left:0%;
+    z-index:5;
+	background-image:url('http://i.imgur.com/ykXk0nY.png');
+	background-size:100%;
+	background-repeat: no-repeat;
+	width:100%;
+	height:100%;
+	opacity:1.0;
+	animation-name: pinkBrighting;
+  	animation-timing-function: linear;
+  	animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+@keyframes pinkBrighting{
+	0% { opacity: 0; }
+	100%{ opacity: 1.0; }
+}
+
+/*====================================================================*/
+.boat{
+	position:absolute;
+    top:60%;
+    left:0%;
+    z-index:7;
+	background-image:url('http://i.imgur.com/B6MNMzM.png');
+	background-size:100%;
+	background-repeat: no-repeat;
+	width:90%;
+	height:55%;
+	opacity:1.0;
+}
+.banban{
+	pointer-events: none;
+	position:absolute;
+    top:3%;
+    left:41%;
+    z-index:6;
+	background-image:url('http://i.imgur.com/LA2U7hy.png');
+	background-size:100%;
+	background-repeat: no-repeat;
+	width:12%;
+	height:100%;
+	opacity:1.0;
+}
+.flag{
+	pointer-events: none;
+	position:absolute;
+    top:15%;
+    left:50%;
+    z-index:6;
+	background-image:url('http://i.imgur.com/YdzjFUh.png');
+	background-size:100%;
+	background-repeat: no-repeat;
+	width:30%;
+	height:100%;
+	opacity:1.0;
+}
+.boatPaddle{
+	pointer-events: none;
+	position:absolute;
+    top:65%;
+    left:50%;
+    z-index:10;
+	background-image:url('http://i.imgur.com/wSdBTV6.png');
+	background-size:100%;
+	background-repeat: no-repeat;
+	width:30%;
+	height:100%;
+	opacity:1.0;
+}
+/*====================================================================*/
 
 .heart0{
 	position:absolute;
     z-index:5;
 
-    background-image:url('http://i.imgur.com/vGp6Eid.png');
 	background-size:100%;
 	background-repeat: no-repeat;
-	width:5%;
+	width:30%;
 	height:100%;
-
-	/*
-	animation-name: heartMoving;
-  	animation-timing-function: linear;
-  	animation-duration: 5000ms;
-    animation-iteration-count: finite;
-    animation-direction: normal;
-    */
 }
-@keyframes heartMoving{
-	0% { left: 0%; }
-	100%{ left: 100%; }
-}
-
 .heart1{
 	position:absolute;
     z-index:5;
 
-    background-image:url('http://i.imgur.com/dJ5TsV7.png');
 	background-size:100%;
 	background-repeat: no-repeat;
-	width:5%;
+	width:30%;
 	height:100%;
+}
+.heart2{
+	position:absolute;
+    z-index:5;
 
-	/*
-	animation-name: heartMoving;
-  	animation-timing-function: linear;
-  	animation-duration: 5000ms;
-    animation-iteration-count: finite;
-    animation-direction: normal;
-    */
+	background-size:100%;
+	background-repeat: no-repeat;
+	width:30%;
+	height:100%;
+}
+.heart3{
+	position:absolute;
+    z-index:5;
+
+	background-size:100%;
+	background-repeat: no-repeat;
+	width:10%;
+	height:20%;
 }
