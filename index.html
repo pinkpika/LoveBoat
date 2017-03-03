@@ -30,78 +30,94 @@ $( window ).resize(function() {
   renderer.view.style.height = $( window ).width() / zoneProportion +"px";
 });
 
-var sheepZone;
-var sheep, sheepTexture, sheepLoveTexture, sheepDragTexture;
-var sheepBright, sheepBrightTexure;
-var pinkZone;
-var pink, pinkTexture, pinkLoveTexture, pinkDragTexture;
-var pinkBright, pinkBrightTexure;
+var sheepZone, sheep, sheepBright;
+var pinkZone, pink, pinkBright;
 var boatZone, boat, banban, flag, boatPaddle;
 var landZone, land, landBack;
 var flowZone, flow, flowBack;
 var mountainZone, mountain, mountainBack;
 var whale, waterColumn;
 
-var isBoatStop = false, isBoatAccelerate = false;
-var boatSpeed = 2.0, boatAccelerate = 0.0, boatPaddleRo = 0.0;
-var isSheepFall = false, isPinkFall = false;
+var boatPaddleRo = 0.0;
 var isWaterGo = false, isWaterDown = false, waterScale = 1.0;
 var message, messageOutput;
+var physicsObjects = [];
+var startDate = new Date();
+var goBoatDate = new Date("2016-5-18 00:00:00");
+var spantime, d, h, m, s;
+var hitAreaRecs = [];
 
-var arr = new Array(100);
 function setup() {
 
   sheepZone = new Container();
-  sheepTexture = Texture.fromImage('http://i.imgur.com/PkYtBhg.png');
-  sheepLoveTexture = Texture.fromImage('http://i.imgur.com/N4nj96o.png');
-  sheepBrightTexture = Texture.fromImage('http://i.imgur.com/qMolVry.png');
-  sheepDragTexture = Texture.fromImage('http://i.imgur.com/Fxdv48h.gif');
+  sheepZone.textures = [];
+  sheepZone.textures.push(Texture.fromImage('http://i.imgur.com/PkYtBhg.png')); //sheep
+  sheepZone.textures.push(Texture.fromImage('http://i.imgur.com/N4nj96o.png')); //sheepLove
+  sheepZone.textures.push(Texture.fromImage('http://i.imgur.com/qMolVry.png')); //sheepBright
+  sheepZone.textures.push(Texture.fromImage('http://i.imgur.com/Fxdv48h.gif')); //sheepDrag
   sheepZone.pivot.set(0.5, 1.0);
   sheepZone.position.set(900, 650);
   sheepZone.scale.set(0.8);
   sheepZone.interactive = true;
   sheepZone.buttonMode = true;
-  sheepZone.on('pointerdown', onSheepDown)
-       .on('pointerup', onSheepUp)
-       .on('pointerupoutside', onSheepUp)
-       .on('pointermove', onSheepDragMove)
-       .on('pointerover', onSheepOver)
-       .on('pointerout', onSheepOut);
-  sheep = new Sprite(sheepTexture);
+  sheepZone.on('pointerdown', onCharaDown)
+       .on('pointerup', onCharaUp)
+       .on('pointerupoutside', onCharaUp)
+       .on('pointermove', onCharaDragMove)
+       .on('pointerover', onCharaOver)
+       .on('pointerout', onCharaOut);
+  sheep = new Sprite(sheepZone.textures[0]);
   sheep.position.set(0, 0);
   sheep.anchor.set(0.5, 1.0);
-  sheepBright = new Sprite(sheepBrightTexture);
+  sheepBright = new Sprite(sheepZone.textures[2]);
   sheepBright.anchor.set(0.5, 1.0);
   sheepZone.addChild(sheepBright);
   sheepZone.addChild(sheep);
   stage.addChild(sheepZone);
   sheepZone.zIndex = 70;
+  sheepZone.vx = 0;
+  sheepZone.vy = 0;
+  sheepZone.aty = 5.0;
+  sheepZone.isFalling = false;
+  physicsObjects.push(sheepZone);
+  sheepZone.hitArea = new PIXI.Rectangle(-100, -200, 190, 190);
+  hitAreaRecs.push(sheepZone);
+  sheepZone.rotation = 0; sheepZone.rotateFlag = true;  
 
   pinkZone = new Container();
-  pinkTexture = Texture.fromImage('http://i.imgur.com/Z5hkuz8.png');
-  pinkLoveTexture = Texture.fromImage('http://i.imgur.com/8ymjOwl.png');
-  pinkBrightTexture = Texture.fromImage('http://i.imgur.com/ykXk0nY.png');
-  pinkDragTexture = Texture.fromImage('http://i.imgur.com/ErJ36Xy.gif');
+  pinkZone.textures = [];
+  pinkZone.textures.push(Texture.fromImage('http://i.imgur.com/Z5hkuz8.png')); //pink
+  pinkZone.textures.push(Texture.fromImage('http://i.imgur.com/8ymjOwl.png')); //pinkLove
+  pinkZone.textures.push(Texture.fromImage('http://i.imgur.com/ykXk0nY.png')); //pinkBright
+  pinkZone.textures.push(Texture.fromImage('http://i.imgur.com/ErJ36Xy.gif')); //pinkDrag
   pinkZone.pivot.set(0.5, 1.0);
   pinkZone.position.set(1120, 650);
   pinkZone.scale.set(0.8);
   pinkZone.interactive = true;
   pinkZone.buttonMode = true;
-  pinkZone.on('pointerdown', onPinkDown)
-       .on('pointerup', onPinkUp)
-       .on('pointerupoutside', onPinkUp)
-       .on('pointermove', onPinkDragMove)
-       .on('pointerover', onPinkOver)
-       .on('pointerout', onPinkOut);
-  pink = new Sprite(pinkTexture);
+  pinkZone.on('pointerdown', onCharaDown)
+       .on('pointerup', onCharaUp)
+       .on('pointerupoutside', onCharaUp)
+       .on('pointermove', onCharaDragMove)
+       .on('pointerover', onCharaOver)
+       .on('pointerout', onCharaOut);
+  pink = new Sprite(pinkZone.textures[0]);
   pink.position.set(0, 0);
   pink.anchor.set(0.5, 1.0);
-  pinkBright = new Sprite(pinkBrightTexture);
+  pinkBright = new Sprite(pinkZone.textures[2]);
   pinkBright.anchor.set(0.5, 1.0);
   pinkZone.addChild(pinkBright);
   pinkZone.addChild(pink);
   stage.addChild(pinkZone);
   pinkZone.zIndex = 70;
+  pinkZone.vx = 0;
+  pinkZone.vy = 0;
+  pinkZone.aty = 5.0;
+  physicsObjects.push(pinkZone);
+  hitAreaRecs.push(pinkZone);
+  pinkZone.hitArea = new PIXI.Rectangle(-100, -200, 190, 190);
+  hitAreaRecs.push(pinkZone);
+  pinkZone.rotation = 0; pinkZone.rotateFlag = true;  
 
   whale = new Sprite(Texture.fromImage('http://i.imgur.com/6K5s214.png'));
   whale.position.set(300, 300);
@@ -110,6 +126,8 @@ function setup() {
   whale.buttonMode = true;
   whale.on('pointerdown', onWhaleDown);
   stage.addChild(whale);
+  whale.hitArea = new PIXI.Rectangle(0, 100, 1000, 200);
+  hitAreaRecs.push(whale);
   waterColumn = new Sprite(Texture.fromImage('http://i.imgur.com/pxI8pSI.png'));
   waterColumn.position.set(580, 400);
   waterColumn.anchor.set(0.5, 0.96);
@@ -121,19 +139,20 @@ function setup() {
   boatZone.pivot.set(0.5, 1.0);
   boatZone.position.set(1000, 700);
   boatZone.scale.set(0.8);
+  boatZone.vx = 2.0;
+  boatZone.atx = 0;
+  boatZone.stopLine = 1600;
+  boatZone.isStop = false;
+  boatZone.isAccelerate = false;
 
   boat = new Sprite(Texture.fromImage('http://i.imgur.com/B6MNMzM.png'));
   boat.anchor.set(0.0, 0.0);
   boat.position.set(-332, -260); //boat.getGlobalPosition().x
   boat.interactive = true;
   boat.buttonMode = true;
-  boat.hitArea = new PIXI.Rectangle(0, 120, 640, 150);
   boat.on('pointerdown', onBoatDown);
-  //var graphics = new PIXI.Graphics();
-  //graphics.beginFill(0xFFFFFF, 0.5);
-  //graphics.lineStyle(1, 0x000000, 0.5);
-  //graphics.drawRect(0, 120, 640, 150);
-  //boat.addChild(graphics);
+  boat.hitArea = new PIXI.Rectangle(0, 120, 640, 150);
+  hitAreaRecs.push(boat);
 
   banban = new Sprite(Texture.fromImage('http://i.imgur.com/LA2U7hy.png'));
   banban.anchor.set(0.5, 1.0);
@@ -190,15 +209,43 @@ function setup() {
 	);
   message.position.set(10, 10);
   stage.addChild(message);
+
+  for(var i = 0;i< hitAreaRecs.length;i++){
+    hitAreaRecs[i].hitAreaRec = new PIXI.Graphics();
+    hitAreaRecs[i].hitAreaRec.beginFill(0xFFFFFF, 0.5);
+    hitAreaRecs[i].hitAreaRec.lineStyle(1, 0x000000, 0.5);
+    hitAreaRecs[i].hitAreaRec.drawRect(hitAreaRecs[i].hitArea.x, hitAreaRecs[i].hitArea.y, 
+      hitAreaRecs[i].hitArea.width, hitAreaRecs[i].hitArea.height);
+    //hitAreaRecs[i].addChild(hitAreaRecs[i].hitAreaRec);
+  }
+
   stage.children.sort(function(a,b) { return a.zIndex - b.zIndex; }); 
   gameLoop();
 }
+
 function updateState() {
-	if(boatZone.x >= 1600.0 && !isBoatAccelerate) isBoatStop = true;
-	else isBoatStop = false;
-	if(isBoatAccelerate) boatAccelerate += 0.2;
-	if(boatAccelerate >= 0.0) isBoatAccelerate = false;
-	if(!isBoatStop) boatZone.x += ( boatSpeed + boatAccelerate ) ;
+  for(var i = 0 ; i < physicsObjects.length ; i++){
+    if(!physicsObjects[i].dragging){
+      if(physicsObjects[i].isFalling && physicsObjects[i].y >= 650.0){ 
+        physicsObjects[i].isFalling = false;
+        physicsObjects[i].children[1].texture = physicsObjects[i].textures[0]; 
+      }
+      if(physicsObjects[i].isFalling){
+        physicsObjects[i].y += 5.0; 
+        physicsObjects[i].children[1].texture = physicsObjects[i].textures[3]; 
+      }
+      else{
+        if(!boatZone.isStop)
+        physicsObjects[i].x += ( boatZone.vx + boatZone.atx ) ;  
+      }
+    }
+  }
+
+	if(boatZone.x >= boatZone.stopLine && !boatZone.isAccelerate) boatZone.isStop = true;
+	else boatZone.isStop = false;
+	if(boatZone.isAccelerate) boatZone.atx += 0.2;
+	if(boatZone.atx >= 0.0) boatZone.isAccelerate = false;
+	if(!boatZone.isStop) boatZone.x += ( boatZone.vx + boatZone.atx ) ;
 	
 	boatPaddle.rotation += boatPaddleRo;
 	if(boatPaddle.rotation < -6.28){ boatPaddleRo = 0.0;
@@ -214,14 +261,6 @@ function updateState() {
     }
   }
 
-	if(isSheepFall && sheepZone.y >= 650.0){ isSheepFall = false; sheep.texture = sheepTexture; }
-	if(isSheepFall){ sheepZone.y += 5.0; sheep.texture = sheepDragTexture; }
-	else{ if(!isBoatStop) sheepZone.x += ( boatSpeed + boatAccelerate ) ;  }
-
-	if(isPinkFall && pinkZone.y >= 650.0){ isPinkFall = false; pink.texture = pinkTexture; }
-	if(isPinkFall){ pinkZone.y += 5.0; pink.texture = pinkDragTexture; }
-	else{ if(!isBoatStop) pinkZone.x += ( boatSpeed + boatAccelerate ) ;  }
-
 	landZone.x += 4;
 	if(landZone.x >= 0) landZone.x = -4000;
 	flowZone.x += 3;
@@ -229,14 +268,15 @@ function updateState() {
 	mountainZone.x += 1;
 	if(mountainZone.x >= 0) mountainZone.x = -4000;
 
-	var startDate = new Date();
-	var GoBoatDate = new Date("2016-5-18 00:00:00");
-	var spantime = (startDate.getTime() - GoBoatDate)/1000;
-	var d = Math.floor(spantime / (24 * 3600));
-	var h = Math.floor((spantime % (24*3600))/3600);
-	var m = Math.floor((spantime % 3600)/(60));
-	var s = Math.floor(spantime%60);
+	spantime = (startDate.getTime() - goBoatDate)/1000;
+	d = Math.floor(spantime / (24 * 3600));
+	h = Math.floor((spantime % (24*3600))/3600);
+	m = Math.floor((spantime % 3600)/(60));
+	s = Math.floor(spantime%60);
 	message.text = "LoveBoat 航行 " +d+" 日 "+h+" 時 "+m+" 分 "+s+" 秒";
+
+  rotateMagic(pinkZone,0.001,0.05);
+  rotateMagic(sheepZone,0.001,0.05);
 }
 function gameLoop(){
   requestAnimationFrame(gameLoop);
@@ -244,77 +284,51 @@ function gameLoop(){
   renderer.render(stage);
 }
 setup();
+function rotateMagic(chara,rotationV,rotationMax) {
+  if(chara.rotateFlag) chara.rotation += rotationV; else chara.rotation -= rotationV;
+  if(chara.rotation>=rotationMax || chara.rotation<=-rotationMax) chara.rotateFlag = !chara.rotateFlag;
+}
 //--------------------------------------------------------------
 function onBoatDown() {
-	isBoatAccelerate = true;
-	boatAccelerate = -10.0;
+	boatZone.isAccelerate = true;
+	boatZone.atx = -10.0;
 	boatPaddleRo = -0.5;
 }
 function onWhaleDown() {
   isWaterGo = true;
 }
 //--------------------------------------------------------------
-function onSheepDown(event) {
-	sheep.texture = sheepDragTexture;
+function onCharaDown(event) {
+	this.children[1].texture = this.textures[3];
     this.isdown = true;
     this.dragging = true;
     this.fixX = this.x - event.data.getLocalPosition(this.parent).x;
     this.fixY = this.y - event.data.getLocalPosition(this.parent).y;
 }
-function onSheepUp() {
+function onCharaUp() {
     this.isdown = false;
     this.dragging = false;
-    if (this.isOver){ sheep.texture = sheepLoveTexture; }
-	else{ sheep.texture = sheepTexture; } 
-	isSheepFall = true;
+    if (this.isOver){ this.children[1].texture = this.textures[1]; }
+	else{ this.children[1].texture = this.textures[0]; } 
+	this.isFalling = true;
 }
-function onSheepOver() {
-    this.isOver = true;
+function onCharaOver() {
+    this.children[1].isOver = true;
     if (this.isdown) { return; }
-    sheep.texture = sheepLoveTexture;
+    this.children[1].texture = this.textures[1];
 }
-function onSheepOut() {
+function onCharaOut() {
     this.isOver = false;
     if (this.isdown) { return; }
-    sheep.texture = sheepTexture;
+    this.children[1].texture = this.textures[0];
 }
-function onSheepDragMove(event) {
+function onCharaDragMove(event) {
     if (this.dragging) {
         this.x = event.data.getLocalPosition(this.parent).x + this.fixX;
         this.y = event.data.getLocalPosition(this.parent).y + this.fixY;
     }
 }
-//--------------------------------------------------------------
-function onPinkDown(event) {
-	pink.texture = pinkDragTexture;
-    this.isdown = true;
-    this.dragging = true;
-    this.fixX = this.x - event.data.getLocalPosition(this.parent).x;
-    this.fixY = this.y - event.data.getLocalPosition(this.parent).y;
-}
-function onPinkUp() {
-    this.isdown = false;
-    this.dragging = false;
-    if (this.isOver){ pink.texture = pinkLoveTexture; }
-	else{ pink.texture = pinkTexture; } 
-	isPinkFall = true;
-}
-function onPinkOver() {
-    this.isOver = true;
-    if (this.isdown) { return; }
-    pink.texture = pinkLoveTexture;
-}
-function onPinkOut() {
-    this.isOver = false;
-    if (this.isdown) { return; }
-    pink.texture = pinkTexture;
-}
-function onPinkDragMove(event) {
-    if (this.dragging) {
-        this.x = event.data.getLocalPosition(this.parent).x + this.fixX;
-        this.y = event.data.getLocalPosition(this.parent).y + this.fixY;
-    }
-}
+
 </script>
 </body>
 
