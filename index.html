@@ -1,46 +1,320 @@
-<!DOCTYPE html>
-<html>
-<head>
+<!doctype html>
+<meta charset="utf-8">
 <title>LoveBoat</title>
-<link rel="stylesheet" type="text/css" href="LBstyle.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
-</head>
-<body>
-<div id="zone">
-  <div class="allLight"></div>
-  <div class="morningSky"></div>
-  <div class="nightSky"></div>
+<body style="margin:0px;">
+<script src="pixi.min.js"></script>
+<script src="jquery.min.js"></script>
+<script>
+//Aliases
+var Container = PIXI.Container,
+    autoDetectRenderer = PIXI.autoDetectRenderer,
+    loader = PIXI.loader,
+    resources = PIXI.loader.resources,
+    TextureCache = PIXI.utils.TextureCache,
+    Sprite = PIXI.Sprite;
+    Texture = PIXI.Texture;
 
-  <div class="star"></div>
-  <div class="mountain"></div>
-  <div class="flow"></div>
+var zoneProportion = 2000 / 800;
+var renderer = autoDetectRenderer(2000, 800);
+document.body.appendChild(renderer.view);
+var stage = new Container();
+renderer.backgroundColor = 0xF2BDD0;
+renderer.render(stage);
 
-  <div class="land"></div>
-  <div class="landClick" onclick="nodGo();"></div>
+$( window ).ready(function() {
+  renderer.view.style.width = $( window ).width()+"px";
+  renderer.view.style.height = $( window ).width() / zoneProportion +"px";
+});
+$( window ).resize(function() {
+  renderer.view.style.width = $( window ).width()+"px";
+  renderer.view.style.height = $( window ).width() / zoneProportion +"px";
+});
 
-  <div class="whale" onclick="waterColumnUpGo();"></div>
-  <div class="waterColumn"></div>
+var sheepZone;
+var sheep, sheepTexture, sheepLoveTexture, sheepDragTexture;
+var sheepBright, sheepBrightTexure;
+var pinkZone;
+var pink, pinkTexture, pinkLoveTexture, pinkDragTexture;
+var pinkBright, pinkBrightTexure;
+var boatZone, boat, banban, flag, boatPaddle;
+var landZone, land, landBack;
+var flowZone, flow, flowBack;
+var mountainZone, mountain, mountainBack;
+var whale, waterColumn;
 
-  <div class="sheepZone" style="left:33%; top:54%;">
-    <div class="sheep" ></div>
-    <div class="sheepBright" ></div>
-  </div>
+var isBoatStop = false, isBoatAccelerate = false;
+var boatSpeed = 2.0, boatAccelerate = 0.0, boatPaddleRo = 0.0;
+var isSheepFall = false, isPinkFall = false;
+var isWaterGo = false, isWaterDown = false, waterScale = 1.0;
+var message, messageOutput;
 
-  <div class="pinkZone" style="left:45%; top:54%;">
-    <div class="pink" ></div>
-    <div class="pinkBright" ></div>
-  </div>
+var arr = new Array(100);
+function setup() {
 
-  <div class="boatZone" style="left:30%;">
-    <div class="boatClick" onclick="boatGoGo();"></div>
-    <div class="boatPaddle" ></div>
-    <div class="boat"></div>
-    <div class="banban" ></div>
-    <div class="flag" ></div>
-  </div>
+  sheepZone = new Container();
+  sheepTexture = Texture.fromImage('http://i.imgur.com/PkYtBhg.png');
+  sheepLoveTexture = Texture.fromImage('http://i.imgur.com/N4nj96o.png');
+  sheepBrightTexture = Texture.fromImage('http://i.imgur.com/qMolVry.png');
+  sheepDragTexture = Texture.fromImage('http://i.imgur.com/Fxdv48h.gif');
+  sheepZone.pivot.set(0.5, 1.0);
+  sheepZone.position.set(900, 650);
+  sheepZone.scale.set(0.8);
+  sheepZone.interactive = true;
+  sheepZone.buttonMode = true;
+  sheepZone.on('pointerdown', onSheepDown)
+       .on('pointerup', onSheepUp)
+       .on('pointerupoutside', onSheepUp)
+       .on('pointermove', onSheepDragMove)
+       .on('pointerover', onSheepOver)
+       .on('pointerout', onSheepOut);
+  sheep = new Sprite(sheepTexture);
+  sheep.position.set(0, 0);
+  sheep.anchor.set(0.5, 1.0);
+  sheepBright = new Sprite(sheepBrightTexture);
+  sheepBright.anchor.set(0.5, 1.0);
+  sheepZone.addChild(sheepBright);
+  sheepZone.addChild(sheep);
+  stage.addChild(sheepZone);
+  sheepZone.zIndex = 70;
 
-</div>
-<script src="LB.js"></script>
+  pinkZone = new Container();
+  pinkTexture = Texture.fromImage('http://i.imgur.com/Z5hkuz8.png');
+  pinkLoveTexture = Texture.fromImage('http://i.imgur.com/8ymjOwl.png');
+  pinkBrightTexture = Texture.fromImage('http://i.imgur.com/ykXk0nY.png');
+  pinkDragTexture = Texture.fromImage('http://i.imgur.com/ErJ36Xy.gif');
+  pinkZone.pivot.set(0.5, 1.0);
+  pinkZone.position.set(1120, 650);
+  pinkZone.scale.set(0.8);
+  pinkZone.interactive = true;
+  pinkZone.buttonMode = true;
+  pinkZone.on('pointerdown', onPinkDown)
+       .on('pointerup', onPinkUp)
+       .on('pointerupoutside', onPinkUp)
+       .on('pointermove', onPinkDragMove)
+       .on('pointerover', onPinkOver)
+       .on('pointerout', onPinkOut);
+  pink = new Sprite(pinkTexture);
+  pink.position.set(0, 0);
+  pink.anchor.set(0.5, 1.0);
+  pinkBright = new Sprite(pinkBrightTexture);
+  pinkBright.anchor.set(0.5, 1.0);
+  pinkZone.addChild(pinkBright);
+  pinkZone.addChild(pink);
+  stage.addChild(pinkZone);
+  pinkZone.zIndex = 70;
+
+  whale = new Sprite(Texture.fromImage('http://i.imgur.com/6K5s214.png'));
+  whale.position.set(300, 300);
+  whale.zIndex = 60 ;
+  whale.interactive = true;
+  whale.buttonMode = true;
+  whale.on('pointerdown', onWhaleDown);
+  stage.addChild(whale);
+  waterColumn = new Sprite(Texture.fromImage('http://i.imgur.com/pxI8pSI.png'));
+  waterColumn.position.set(580, 400);
+  waterColumn.anchor.set(0.5, 0.96);
+  waterColumn.zIndex = 60;
+  waterColumn.scale.y = 1.0;
+  stage.addChild(waterColumn);
+
+  boatZone = new Container();
+  boatZone.pivot.set(0.5, 1.0);
+  boatZone.position.set(1000, 700);
+  boatZone.scale.set(0.8);
+
+  boat = new Sprite(Texture.fromImage('http://i.imgur.com/B6MNMzM.png'));
+  boat.anchor.set(0.0, 0.0);
+  boat.position.set(-332, -260); //boat.getGlobalPosition().x
+  boat.interactive = true;
+  boat.buttonMode = true;
+  boat.hitArea = new PIXI.Rectangle(0, 120, 640, 150);
+  boat.on('pointerdown', onBoatDown);
+  //var graphics = new PIXI.Graphics();
+  //graphics.beginFill(0xFFFFFF, 0.5);
+  //graphics.lineStyle(1, 0x000000, 0.5);
+  //graphics.drawRect(0, 120, 640, 150);
+  //boat.addChild(graphics);
+
+  banban = new Sprite(Texture.fromImage('http://i.imgur.com/LA2U7hy.png'));
+  banban.anchor.set(0.5, 1.0);
+  banban.position.set(30, -140);
+  flag = new Sprite(Texture.fromImage('http://i.imgur.com/YdzjFUh.png'));
+  flag.anchor.set(0.5, 1.0);
+  flag.position.set(200, -400);
+  boatPaddle = new Sprite(Texture.fromImage('http://i.imgur.com/wSdBTV6.png'));
+  boatPaddle.anchor.set(0.5, 0.5);
+  boatPaddle.position.set(150, -100); 
+  boatZone.addChild(boat);
+  boatZone.addChild(banban);
+  boatZone.addChild(flag);
+  boatZone.addChild(boatPaddle);
+  stage.addChild(boatZone);
+  boatZone.zIndex = 80;
+
+  landZone = new Container();
+  landZone.position.set(-4000, 0);
+  land = new Sprite(Texture.fromImage('http://i.imgur.com/dv9hRw2.png'));
+  land.position.set(0, 0);
+  landBack = new Sprite(Texture.fromImage('http://i.imgur.com/dv9hRw2.png'));
+  landBack.position.set(4000, 0);
+  landZone.addChild(land);
+  landZone.addChild(landBack);
+  stage.addChild(landZone);
+  landZone.zIndex = 100;
+
+  flowZone = new Container();
+  flowZone.position.set(-4000, 0);
+  flow = new Sprite(Texture.fromImage('http://i.imgur.com/1v2Gru5.png'));
+  flow.position.set(0, 0);
+  flowBack = new Sprite(Texture.fromImage('http://i.imgur.com/1v2Gru5.png'));
+  flowBack.position.set(4000, 0);
+  flowZone.addChild(flow);
+  flowZone.addChild(flowBack);
+  stage.addChild(flowZone);
+  flowZone.zIndex = 50;
+
+  mountainZone = new Container();
+  mountainZone.position.set(-4000, 0);
+  mountain = new Sprite(Texture.fromImage('http://i.imgur.com/XVwrBAF.png'));
+  mountain.position.set(0, 0);
+  mountainBack = new Sprite(Texture.fromImage('http://i.imgur.com/XVwrBAF.png'));
+  mountainBack.position.set(4000, 0);
+  mountainZone.addChild(mountain);
+  mountainZone.addChild(mountainBack);
+  stage.addChild(mountainZone);
+  mountainZone.zIndex = 10;
+
+  message = new PIXI.Text(
+	  messageOutput, 
+	  {font: "32px sans-serif", fill: "white"}
+	);
+  message.position.set(10, 10);
+  stage.addChild(message);
+  stage.children.sort(function(a,b) { return a.zIndex - b.zIndex; }); 
+  gameLoop();
+}
+function updateState() {
+	if(boatZone.x >= 1600.0 && !isBoatAccelerate) isBoatStop = true;
+	else isBoatStop = false;
+	if(isBoatAccelerate) boatAccelerate += 0.2;
+	if(boatAccelerate >= 0.0) isBoatAccelerate = false;
+	if(!isBoatStop) boatZone.x += ( boatSpeed + boatAccelerate ) ;
+	
+	boatPaddle.rotation += boatPaddleRo;
+	if(boatPaddle.rotation < -6.28){ boatPaddleRo = 0.0;
+		boatPaddle.rotation = 0.0;
+	}
+
+  if(isWaterGo){ 
+    if(!isWaterDown && waterColumn.scale.y < 10.0) waterColumn.scale.y += 1.0;
+    else {
+      isWaterDown = true ; 
+      if(isWaterDown && waterColumn.scale.y >= 1.0) waterColumn.scale.y -= 0.05;
+      else{ isWaterDown = false; isWaterGo = false ; }
+    }
+  }
+
+	if(isSheepFall && sheepZone.y >= 650.0){ isSheepFall = false; sheep.texture = sheepTexture; }
+	if(isSheepFall){ sheepZone.y += 5.0; sheep.texture = sheepDragTexture; }
+	else{ if(!isBoatStop) sheepZone.x += ( boatSpeed + boatAccelerate ) ;  }
+
+	if(isPinkFall && pinkZone.y >= 650.0){ isPinkFall = false; pink.texture = pinkTexture; }
+	if(isPinkFall){ pinkZone.y += 5.0; pink.texture = pinkDragTexture; }
+	else{ if(!isBoatStop) pinkZone.x += ( boatSpeed + boatAccelerate ) ;  }
+
+	landZone.x += 4;
+	if(landZone.x >= 0) landZone.x = -4000;
+	flowZone.x += 3;
+	if(flowZone.x >= 0) flowZone.x = -4000;
+	mountainZone.x += 1;
+	if(mountainZone.x >= 0) mountainZone.x = -4000;
+
+	var startDate = new Date();
+	var GoBoatDate = new Date("2016-5-18 00:00:00");
+	var spantime = (startDate.getTime() - GoBoatDate)/1000;
+	var d = Math.floor(spantime / (24 * 3600));
+	var h = Math.floor((spantime % (24*3600))/3600);
+	var m = Math.floor((spantime % 3600)/(60));
+	var s = Math.floor(spantime%60);
+	message.text = "LoveBoat 航行 " +d+" 日 "+h+" 時 "+m+" 分 "+s+" 秒";
+}
+function gameLoop(){
+  requestAnimationFrame(gameLoop);
+  updateState();
+  renderer.render(stage);
+}
+setup();
+//--------------------------------------------------------------
+function onBoatDown() {
+	isBoatAccelerate = true;
+	boatAccelerate = -10.0;
+	boatPaddleRo = -0.5;
+}
+function onWhaleDown() {
+  isWaterGo = true;
+}
+//--------------------------------------------------------------
+function onSheepDown(event) {
+	sheep.texture = sheepDragTexture;
+    this.isdown = true;
+    this.dragging = true;
+    this.fixX = this.x - event.data.getLocalPosition(this.parent).x;
+    this.fixY = this.y - event.data.getLocalPosition(this.parent).y;
+}
+function onSheepUp() {
+    this.isdown = false;
+    this.dragging = false;
+    if (this.isOver){ sheep.texture = sheepLoveTexture; }
+	else{ sheep.texture = sheepTexture; } 
+	isSheepFall = true;
+}
+function onSheepOver() {
+    this.isOver = true;
+    if (this.isdown) { return; }
+    sheep.texture = sheepLoveTexture;
+}
+function onSheepOut() {
+    this.isOver = false;
+    if (this.isdown) { return; }
+    sheep.texture = sheepTexture;
+}
+function onSheepDragMove(event) {
+    if (this.dragging) {
+        this.x = event.data.getLocalPosition(this.parent).x + this.fixX;
+        this.y = event.data.getLocalPosition(this.parent).y + this.fixY;
+    }
+}
+//--------------------------------------------------------------
+function onPinkDown(event) {
+	pink.texture = pinkDragTexture;
+    this.isdown = true;
+    this.dragging = true;
+    this.fixX = this.x - event.data.getLocalPosition(this.parent).x;
+    this.fixY = this.y - event.data.getLocalPosition(this.parent).y;
+}
+function onPinkUp() {
+    this.isdown = false;
+    this.dragging = false;
+    if (this.isOver){ pink.texture = pinkLoveTexture; }
+	else{ pink.texture = pinkTexture; } 
+	isPinkFall = true;
+}
+function onPinkOver() {
+    this.isOver = true;
+    if (this.isdown) { return; }
+    pink.texture = pinkLoveTexture;
+}
+function onPinkOut() {
+    this.isOver = false;
+    if (this.isdown) { return; }
+    pink.texture = pinkTexture;
+}
+function onPinkDragMove(event) {
+    if (this.dragging) {
+        this.x = event.data.getLocalPosition(this.parent).x + this.fixX;
+        this.y = event.data.getLocalPosition(this.parent).y + this.fixY;
+    }
+}
+</script>
 </body>
-</html>
+
