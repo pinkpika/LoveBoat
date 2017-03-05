@@ -37,7 +37,7 @@ var landZone, land, landBack;
 var flowZone, flow, flowBack;
 var mountainZone, mountain, mountainBack;
 var whale, waterColumn;
-var nodTexture;
+var nodTexture, nodInBoatCount = 0;
 
 var boatPaddleRo = 0.0;
 var isWaterGo = false, isWaterDown = false, waterScale = 1.0;
@@ -51,6 +51,8 @@ var hitAreaRecs = [];
 var rotationObjects = [];
 var rotationV = [0.0,0.002,0.005,0.05];
 var rotationMax = [0.0,0.07,0.5,0.5];
+var randomMovingTime = 1.0;
+var randomMovingTimeCount = randomMovingTime;
 
 function setup() {
   nodTexture = Texture.fromImage('http://i.imgur.com/LDd4k1C.gif');
@@ -80,13 +82,15 @@ function setup() {
   stage.addChild(sheepZone);
   sheepZone.vx = 0; sheepZone.vy = 0;
   sheepZone.atx = 0; sheepZone.aty = 5.0;
-  sheepZone.horizontalPlane = 530;
+  sheepZone.horizontalPlane = 525;
   sheepZone.isFalling = true;
+  sheepZone.isInBoat = false;
   physicsObjects.push(sheepZone);
   sheepZone.hitArea = new PIXI.Rectangle(0,40, 220, 200);
   hitAreaRecs.push(sheepZone);
   sheepZone.rotation = 0; sheepZone.rotationFlag = true; sheepZone.rotationValue = 1;
-  rotationObjects.push(sheepZone);
+  sheepZone.willBeDead = false;
+  sheepZone.isMoving = false; sheepZone.goalX = 0.0; sheepZone.randomMovingTime = 3.0;
 
   pinkZone = new Container();
   pinkZone.textures = [];
@@ -113,16 +117,18 @@ function setup() {
   stage.addChild(pinkZone);
   pinkZone.vx = 0;  pinkZone.vy = 0;
   pinkZone.atx = 0; pinkZone.aty = 5.0;
-  pinkZone.horizontalPlane = 530;
+  pinkZone.horizontalPlane = 525;
   pinkZone.isFalling = true;
+  pinkZone.isInBoat = false;
   physicsObjects.push(pinkZone);
   pinkZone.hitArea = new PIXI.Rectangle(0,40, 220, 200);
   hitAreaRecs.push(pinkZone);
   pinkZone.rotation = 0; pinkZone.rotationFlag = true; pinkZone.rotationValue = 1;
-  rotationObjects.push(pinkZone);
+  pinkZone.willBeDead = false;
+  pinkZone.isMoving = false; pinkZone.goalX = 0.0; pinkZone.randomMovingTime = 3.0;
 
   whale = new Sprite(Texture.fromImage('http://i.imgur.com/6K5s214.png'));
-  whale.position.set(300, 300);
+  whale.position.set(300, 290);
   whale.interactive = true;
   whale.buttonMode = true;
   whale.on('pointerdown', onWhaleDown);
@@ -130,7 +136,7 @@ function setup() {
   whale.hitArea = new PIXI.Rectangle(0, 100, 1000, 180);
   hitAreaRecs.push(whale);
   waterColumn = new Sprite(Texture.fromImage('http://i.imgur.com/pxI8pSI.png'));
-  waterColumn.position.set(580, 400);
+  waterColumn.position.set(580, 410);
   waterColumn.anchor.set(0.5, 0.96);
   waterColumn.scale.y = 1.0;
   stage.addChild(waterColumn);
@@ -146,7 +152,7 @@ function setup() {
 
   boat = new Sprite();
   boat.oTexture = Texture.fromImage('http://i.imgur.com/B6MNMzM.png');
-  boat.texture = new PIXI.Texture(boat.oTexture, new PIXI.Rectangle(0, 0, 664, 200))
+  boat.texture = new PIXI.Texture(boat.oTexture, new PIXI.Rectangle(0, 0, 664, 210))
   boat.anchor.set(0.0, 0.0);
   boat.position.set(-332, -260); //boat.getGlobalPosition().x
   boat.interactive = true;
@@ -208,11 +214,11 @@ function setup() {
   
   mountainZone.zIndex = 10;
   flowZone.zIndex = 50;
-  whale.zIndex = 60;
-  waterColumn.zIndex = 59.99;
+  whale.zIndex = 49.99;
+  waterColumn.zIndex = 49.98;
   sheepZone.zIndex = 70;
   pinkZone.zIndex = 69.99;
-  boatZone.zIndex = 80;
+  boatZone.zIndex = 70.01;
   landZone.zIndex = 100;
 
   message = new PIXI.Text(
@@ -234,63 +240,78 @@ function setup() {
   stage.children.sort(function(a,b) { return a.zIndex - b.zIndex; }); 
   gameLoop();
 }
-
+//------------------------------------------------------------------------------------------------
 function updateState() {
+  //sort
   stage.children.sort(function(a,b) { 
     a.zIndex = a.zIndex || 0;
     b.zIndex = b.zIndex || 0;
     return a.zIndex - b.zIndex;
   }); 
 
+  //boat
   if(boatZone.x >= boatZone.stopLine && !boatZone.isAccelerate) boatZone.isStop = true;
   else boatZone.isStop = false;
   if(boatZone.isAccelerate) boatZone.atx += 0.2;
   if(boatZone.atx >= 0.0) boatZone.isAccelerate = false;
   if(!boatZone.isStop) boatZone.x += ( boatZone.vx + boatZone.atx ) ;
 
+  //physicsObjects
+  randomMovingTimeCount -= 1.0/60.0;
   for(var i = 0 ; i < physicsObjects.length ; i++){
-    if(!physicsObjects[i].dragging){
-      if(physicsObjects[i].isFalling && physicsObjects[i].vy > 0 && 
-        physicsObjects[i].y >= physicsObjects[i].horizontalPlane){ 
+    if(physicsObjects[i].willBeDead && physicsObjects[i].x > 3000.0)
+    {
+      physicsObjects[i].destroy();
+      physicsObjects.splice(i, 1); 
+      i -= 1; continue;
+    }
+    else if(physicsObjects[i].dragging){ }
+    else if(physicsObjects[i].isFalling){
+      physicsObjects[i].vy += ( 0.07 * physicsObjects[i].aty );
+      physicsObjects[i].y += ( physicsObjects[i].vy + physicsObjects[i].aty ) ;  
+      physicsObjects[i].x += physicsObjects[i].vx;
+      if(i===0||i===1) physicsObjects[i].children[1].texture = physicsObjects[i].textures[3]; 
+      if(physicsObjects[i].vy > 0 && physicsObjects[i].y >= physicsObjects[i].horizontalPlane){ 
         physicsObjects[i].isFalling = false;
         physicsObjects[i].vy = 0;
       }
-      else if(physicsObjects[i].isFalling){
-        physicsObjects[i].vy += ( 0.07 * physicsObjects[i].aty );
-        physicsObjects[i].y += ( physicsObjects[i].vy + physicsObjects[i].aty ) ;  
-        physicsObjects[i].x += physicsObjects[i].vx;
-        if(i===0||i===1)
-          physicsObjects[i].children[1].texture = physicsObjects[i].textures[3]; 
+    }
+    else if(physicsObjects[i].isInBoat){
+      if(randomMovingTimeCount < 0.0 && Math.floor(Math.random() * 2) < 1.0){
+          physicsObjects[i].isMoving = true; 
+          physicsObjects[i].goalX = Math.floor(Math.random()*300)-150;
       }
-      else{
-        if(physicsObjects[i].x < (boatZone.x + 250) && physicsObjects[i].x > (boatZone.x - 250) &&
-          physicsObjects[i].horizontalPlane < (sheepZone.horizontalPlane + 10) &&
-          physicsObjects[i].horizontalPlane > (sheepZone.horizontalPlane - 10) )
-        { 
+      if(physicsObjects[i].isMoving) movingMagic(physicsObjects[i],boatZone);
+      if(!boatZone.isStop) physicsObjects[i].x += ( boatZone.vx + boatZone.atx ) ;
+    }
+    else{
+      if(physicsObjects[i].x < (boatZone.x + 250) && physicsObjects[i].x > (boatZone.x - 250) &&
+        physicsObjects[i].horizontalPlane <= sheepZone.horizontalPlane &&
+        physicsObjects[i].horizontalPlane >= (sheepZone.horizontalPlane - 25) )
+      { 
+          physicsObjects[i].isMoving = true; physicsObjects[i].goalX = 0;
           physicsObjects[i].isInBoat = true;
           physicsObjects[i].rotationValue = 1;
           if(i===0||i===1) physicsObjects[i].children[1].texture = physicsObjects[i].textures[0]; 
-          if(!boatZone.isStop) physicsObjects[i].x += ( boatZone.vx + boatZone.atx ) ; 
-        }
-        else{
-          physicsObjects[i].isInBoat = false;
-          physicsObjects[i].rotationValue = 3;
-          if(i===0||i===1) physicsObjects[i].children[1].texture = physicsObjects[i].textures[3]; 
-          physicsObjects[i].x += flowZone.flowSpeed; 
-        }
+          else nodInBoatCount++;
+      }
+      else{
+        physicsObjects[i].isInBoat = false;
+        physicsObjects[i].rotationValue = 3;
+        physicsObjects[i].x += flowZone.flowSpeed; 
       }
     }
+    rotateMagic(physicsObjects[i]);
   }
+  if(randomMovingTimeCount < 0.0 ) randomMovingTimeCount = randomMovingTime ;
 
-	for(var i = 0 ; i < rotationObjects.length ; i++){
-    rotateMagic(rotationObjects[i]);
-  }
-
+  //boatPaddle
 	boatPaddle.rotation += boatPaddleRo;
 	if(boatPaddle.rotation < -6.28){ boatPaddleRo = 0.0;
 		boatPaddle.rotation = 0.0;
 	}
 
+  //Water
   if(isWaterGo){ 
     if(!isWaterDown && waterColumn.scale.y < 10.0) waterColumn.scale.y += 1.0;
     else {
@@ -312,7 +333,8 @@ function updateState() {
 	h = Math.floor((spantime % (24*3600))/3600);
 	m = Math.floor((spantime % 3600)/(60));
 	s = Math.floor(spantime%60);
-	message.text = "LoveBoat 航行 " +d+" 日 "+h+" 時 "+m+" 分 "+s+" 秒";
+	message.text = "LoveBoat 航行時間 : " +d+" 日 "+h+" 時 "+m+" 分 "+s+" 秒";
+  message.text += " / nod 收集數量 : " + nodInBoatCount + " 個";
 }
 function gameLoop(){
   requestAnimationFrame(gameLoop);
@@ -320,9 +342,9 @@ function gameLoop(){
   renderer.render(stage);
 }
 setup();
-
+//------------------------------------------------------------------------------------------------
 function shootNod(event) {
-  for(var i = 0 ; i < 10 ; i++){
+  for(var i = 0 ; i < 5 ; i++){
     var index = physicsObjects.length;
     physicsObjects[index] = new Sprite(nodTexture);
     physicsObjects[index].pivot.set(205, 176);
@@ -331,34 +353,41 @@ function shootNod(event) {
     physicsObjects[index].scale.set(0.2);
     physicsObjects[index].dragging = false;
     physicsObjects[index].isFalling = true;
-    physicsObjects[index].vx = Math.floor(Math.random() * 11)-5;  
-    physicsObjects[index].vy = (-20-Math.floor(Math.random() * 25));
+    physicsObjects[index].vx = Math.floor(Math.random() * 1100)/100.0-5; //-5.00~5.00 
+    physicsObjects[index].vy = (-20-Math.floor(Math.random() * 2500)/100.0); //0.00~25.00
     physicsObjects[index].atx = 0; 
     physicsObjects[index].aty = 5.0;
     var h = 600 + Math.floor(Math.random() * 20000)/100.0 -100; //500.00~699.99
     physicsObjects[index].horizontalPlane = h;
-    if(physicsObjects[index].horizontalPlane < 530){ //500~530
-      physicsObjects[index].zIndex = 50+(h-500)*20.0/30.0;
-      if(physicsObjects[index].zIndex === 60.0) physicsObjects[index].zIndex = 59;
-      if(physicsObjects[index].zIndex === 70.0) physicsObjects[index].zIndex = 69;
+    if(physicsObjects[index].horizontalPlane < sheepZone.horizontalPlane){ //500~525(50~70)
+      physicsObjects[index].zIndex = 50.01+(h-500)*20.0/25.0;
+      if(physicsObjects[index].zIndex >= 70.0) physicsObjects[index].zIndex = 69 - Math.random();
     }
-    else if(physicsObjects[index].horizontalPlane < 540){ //530~540
-      physicsObjects[index].zIndex = 70+(h-530)*10.0/10.0;
-      if(physicsObjects[index].zIndex === 80.0) physicsObjects[index].zIndex = 79;
+    else if(physicsObjects[index].horizontalPlane < 580){ //525~580(70)-moveCharaBack
+      physicsObjects[index].zIndex = 69 - Math.random();
     }
-    else{ //540~700
-      physicsObjects[index].zIndex = 80+(h-540)*20.0/160.0;
-      if(physicsObjects[index].zIndex === 100.0) physicsObjects[index].zIndex = 99;
+    else{ //525~700(70~100)
+      physicsObjects[index].zIndex = 70.01+(h-525)*30.0/175.0;
+      if(physicsObjects[index].zIndex >= 100.0) physicsObjects[index].zIndex = 99;
     }
     stage.addChild(physicsObjects[physicsObjects.length-1]);
     physicsObjects[index].rotation = 0; 
     physicsObjects[index].rotationFlag = true; 
-    physicsObjects[index].rotationValue = 1;
-    rotationObjects.push(physicsObjects[index]);
-    console.log(physicsObjects[index].zIndex);
+    physicsObjects[index].rotationValue = 2;
+    physicsObjects[index].willBeDead = true;
+    physicsObjects[index].isMoving = false;
+    //physicsObjects[index].tint = Math.round(0xffffff * (1.0-Math.random()/1000.0));
   }
 }
-
+//------------------------------------------------------------------------------------------------
+function movingMagic(chara,goal) {
+  var temp = goal.x + chara.goalX - chara.x;
+  chara.x += temp/30.0/1.0;
+  //chara.y += ( - chara.y)/60.0/chara.totalTime;
+  if(Math.abs(temp) <= temp/30.0/1.0){
+    chara.isMoving = false;
+  }
+}
 function rotateMagic(chara) {
   if(chara.rotation>rotationMax[chara.rotationValue]) {
     chara.rotationFlag = !chara.rotationFlag;
@@ -371,7 +400,7 @@ function rotateMagic(chara) {
   if(chara.rotationFlag) chara.rotation += rotationV[chara.rotationValue]; 
   else chara.rotation -= rotationV[chara.rotationValue];
 }
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
 function onBoatDown() {
 	boatZone.isAccelerate = true;
 	boatZone.atx = -10.0;
@@ -380,37 +409,39 @@ function onBoatDown() {
 function onWhaleDown() {
   isWaterGo = true;
 }
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
 function onCharaDown(event) {
 	this.children[1].texture = this.textures[3];
-    this.isdown = true;
-    this.dragging = true;
-    this.fixX = this.x - event.data.getLocalPosition(this.parent).x;
-    this.fixY = this.y - event.data.getLocalPosition(this.parent).y;
-    this.rotationValue = 2;
+  this.isInBoat = false;
+  this.isMoving = false;
+  this.isdown = true;
+  this.dragging = true;
+  this.fixX = this.x - event.data.getLocalPosition(this.parent).x;
+  this.fixY = this.y - event.data.getLocalPosition(this.parent).y;
+  this.rotationValue = 2;
 }
 function onCharaUp() {
-    this.isdown = false;
-    this.dragging = false;
-    if (this.isOver){ this.children[1].texture = this.textures[1]; }
-	else{ this.children[1].texture = this.textures[0]; } 
+  this.isdown = false;
+  this.dragging = false;
+  if (this.isOver){ this.children[1].texture = this.textures[1]; }
+  else{ this.children[1].texture = this.textures[0]; } 
 	this.isFalling = true;
 }
 function onCharaOver() {
-    this.children[1].isOver = true;
-    if (this.isdown) { return; }
-    this.children[1].texture = this.textures[1];
+  this.children[1].isOver = true;
+  if (this.isdown) { return; }
+  this.children[1].texture = this.textures[1];
 }
 function onCharaOut() {
-    this.isOver = false;
-    if (this.isdown) { return; }
-    this.children[1].texture = this.textures[0];
+  this.isOver = false;
+  if (this.isdown) { return; }
+  this.children[1].texture = this.textures[0];
 }
 function onCharaDragMove(event) {
-    if (this.dragging) {
-        this.x = event.data.getLocalPosition(this.parent).x + this.fixX;
-        this.y = event.data.getLocalPosition(this.parent).y + this.fixY;
-    }
+  if (this.dragging) {
+    this.x = event.data.getLocalPosition(this.parent).x + this.fixX;
+    this.y = event.data.getLocalPosition(this.parent).y + this.fixY;
+  }
 }
 
 </script>
