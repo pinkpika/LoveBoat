@@ -352,6 +352,7 @@ function updateState() {
   if(randomMovingTimeCount < 0.0 ) randomMovingTimeCount = randomMovingTime ;
   
   //Time
+  startDate = new Date();
 	spantime = (startDate.getTime() - goBoatDate)/1000;
 	d = Math.floor(spantime / (24 * 3600));
 	h = Math.floor((spantime % (24*3600))/3600);
