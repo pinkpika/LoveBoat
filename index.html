@@ -128,10 +128,14 @@ function setup() {
 
   pinkZone = new Container();
   pinkZone.textures = [];
-  pinkZone.textures.push(Texture.fromImage('http://i.imgur.com/Z5hkuz8.png')); //pink
-  pinkZone.textures.push(Texture.fromImage('http://i.imgur.com/8ymjOwl.png')); //pinkLove
+  pinkZone.textures.push(Texture.fromImage('http://i.imgur.com/AeuARUH.png')); //pink
+  pinkZone.textures.push(Texture.fromImage('http://i.imgur.com/ESwJe93.png')); //pinkLove
   pinkZone.textures.push(Texture.fromImage('http://i.imgur.com/ykXk0nY.png')); //pinkBright
-  pinkZone.textures.push(Texture.fromImage('http://i.imgur.com/ErJ36Xy.gif')); //pinkDrag
+  pinkZone.textures.push(Texture.fromImage('http://i.imgur.com/80A1hdv.png')); //pinkDrag
+  //pinkZone.textures.push(Texture.fromImage('http://i.imgur.com/Z5hkuz8.png')); //pink
+  //pinkZone.textures.push(Texture.fromImage('http://i.imgur.com/8ymjOwl.png')); //pinkLove
+  //pinkZone.textures.push(Texture.fromImage('http://i.imgur.com/ykXk0nY.png')); //pinkBright
+  //pinkZone.textures.push(Texture.fromImage('http://i.imgur.com/ErJ36Xy.gif')); //pinkDrag
   pinkZone.pivot.set(110, 160); pinkZone.position.set(1170, 200);
   pinkZone.on('pointerdown', onCharaDown).on('pointerup', onCharaUp)
           .on('pointerupoutside', onCharaUp).on('pointermove', onCharaDragMove)
@@ -393,7 +397,7 @@ function updateState() {
             physicsObjects[i].children[1].texture = physicsObjects[i].textures[0]; 
             setMoving(physicsObjects[i],true,30,0,physicsObjects[i].horizontalPlane-boatZone.y);
           }
-          else{ 
+          else{
             fireObjects.push(physicsObjects[i]);
             setMoving(physicsObjects[i],true,30,
             0,sheepZone.horizontalPlane + 10 - boatZone.y - Math.floor(fireObjects.length/nodInBoatWidth)*nodInBoatHeight);
