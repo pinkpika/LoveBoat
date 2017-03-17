@@ -64,7 +64,7 @@ var scaleYMax = [0.0,0.02,0.05,0.1,0.5];
 var nodTextures, nodInBoatWidth = 10, nodInBoatHeight = 10;
 var isFireMode = false, isBursting = false, tempCover, fireHeart;
 
-var loveTextures, shootLoveTime = 60;
+var loveTextures, shootLoveTime = 30;
 
 function setPhysics(chara,vx,vy,atx,aty,horizontalPlane,isFalling,isInBoat,isInFlow,isMoving){
   chara.vx = vx; chara.vy = vy; chara.atx = atx; chara.aty = aty;
@@ -109,10 +109,10 @@ function setup() {
   nodTextures.push(Texture.fromImage('http://i.imgur.com/MVShpUE.png'));
 
   loveTextures = [];
-  loveTextures.push(Texture.fromImage('http://i.imgur.com/2mjVDyP.png'));
-  loveTextures.push(Texture.fromImage('http://i.imgur.com/8JMmUXn.png'));
-  loveTextures.push(Texture.fromImage('http://i.imgur.com/s9HySw8.png'));
-  loveTextures.push(Texture.fromImage('http://i.imgur.com/vWv1hyn.png'));
+  loveTextures.push(Texture.fromImage('http://i.imgur.com/zW8vcxO.png'));
+  loveTextures.push(Texture.fromImage('http://i.imgur.com/oHSnKY0.png'));
+  loveTextures.push(Texture.fromImage('http://i.imgur.com/aOOHEb4.png'));
+  loveTextures.push(Texture.fromImage('http://i.imgur.com/YZXw3zM.png'));
 
   sheepZone = new Container();
   sheepZone.textures = [];
@@ -311,7 +311,7 @@ function updateState() {
 
   shootLoveTime --;
   if(shootLoveTime < 0){
-    shootLove(); shootLoveTime = 60;
+    shootLove(); shootLoveTime = 30;
   }
   //fire------------------------------------------------------------------
   if(isFireMode){
