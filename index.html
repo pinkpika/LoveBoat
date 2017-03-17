@@ -39,6 +39,7 @@ var flowZone, flow, flowBack;
 var mountainZone, mountain, mountainBack;
 var whaleZone, whale, waterColumn;
 var skyZone, sky;
+var loveLightZone, loveLight;
 
 var boatPaddleRo = 0.0;
 var isWaterGo = false, isWaterDown = false, waterScale = 1.0;
@@ -46,7 +47,7 @@ var message, messageOutput;
 
 var physicsObjects = [], hitAreaRecs = [], fireObjects = [], firedObjects = [];
 
-var startDate = new Date();
+var nowDate = new Date();
 var goBoatDate = new Date("2016-5-18 00:00:00");
 var spantime, d, h, m, s;
 
@@ -62,6 +63,8 @@ var scaleYMax = [0.0,0.02,0.05,0.1,0.5];
 
 var nodTexture, nodInBoatWidth = 10, nodInBoatHeight = 10;
 var isFireMode = false, isBursting = false, tempCover, fireHeart;
+
+var loveTextures, shootLoveTime = 60;
 
 function setPhysics(chara,vx,vy,atx,aty,horizontalPlane,isFalling,isInBoat,isInFlow,isMoving){
   chara.vx = vx; chara.vy = vy; chara.atx = atx; chara.aty = aty;
@@ -100,8 +103,15 @@ function setup() {
   setScale(fireHeart,0.5,true,1,-1);
   stage.addChild(fireHeart);
 
-  nodTexture = Texture.fromImage('http://i.imgur.com/LDd4k1C.gif');
-  //nodTexture = Texture.fromImage('http://i.imgur.com/FdOopTP.png');
+  //nodTexture = Texture.fromImage('http://i.imgur.com/LDd4k1C.gif');
+  nodTexture = Texture.fromImage('http://i.imgur.com/FdOopTP.png');
+  nodTexture = Texture.fromImage('http://i.imgur.com/MVShpUE.png');
+
+  loveTextures = [];
+  loveTextures.push(Texture.fromImage('http://i.imgur.com/2mjVDyP.png'));
+  loveTextures.push(Texture.fromImage('http://i.imgur.com/8JMmUXn.png'));
+  loveTextures.push(Texture.fromImage('http://i.imgur.com/s9HySw8.png'));
+  loveTextures.push(Texture.fromImage('http://i.imgur.com/vWv1hyn.png'));
 
   sheepZone = new Container();
   sheepZone.textures = [];
@@ -250,6 +260,12 @@ function setup() {
   sky.position.set(0, 0);
   skyZone.addChild(sky);
   stage.addChild(skyZone);
+
+  loveLightZone = new Container();
+  loveLight = new Sprite(Texture.fromImage('http://i.imgur.com/ZXyC5NR.png'));
+  loveLight.position.set(0, 0);
+  loveLightZone.addChild(loveLight);
+  stage.addChild(loveLightZone);
   
   message = new PIXI.Text(messageOutput, 
     {font: "32px sans-serif", fill: "white"}
@@ -269,6 +285,7 @@ function setup() {
   landZone.zIndex = 100;
   fireHeart.zIndex = 300;
   message.zIndex = 1000;
+  loveLightZone.zIndex = 500;
 
   for(var i = 0;i< hitAreaRecs.length;i++){
     hitAreaRecs[i].hitAreaRec = new PIXI.Graphics();
@@ -291,6 +308,10 @@ function updateState() {
     return a.zIndex - b.zIndex;
   }); 
 
+  shootLoveTime --;
+  if(shootLoveTime < 0){
+    shootLove(); shootLoveTime = 60;
+  }
   //fire------------------------------------------------------------------
   if(isFireMode){
     fireHeart.position.set(renderer.plugins.interaction.mouse.global.x,
@@ -424,13 +445,16 @@ function updateState() {
   if(randomMovingTimeCount < 0.0 ) randomMovingTimeCount = randomMovingTime ;
   
   //Time-------------------------------
-  startDate = new Date();
-	spantime = (startDate.getTime() - goBoatDate)/1000;
+  nowDate = new Date();
+	spantime = (nowDate.getTime() - goBoatDate)/1000;
 	d = Math.floor(spantime / (24 * 3600));
 	h = Math.floor((spantime % (24*3600))/3600);
 	m = Math.floor((spantime % 3600)/(60));
 	s = Math.floor(spantime%60);
-	message.text = "LoveBoat 航行時間 : " +d+" 日 "+h+" 時 "+m+" 分 "+s+" 秒";
+  var monthCount = 12 * ( nowDate.getFullYear() - goBoatDate.getFullYear() ) +
+    nowDate.getMonth() - goBoatDate.getMonth() ;
+  if(nowDate.getDate()>18) monthCount -= 1;
+	message.text = "LoveBoat 航行時間 : " +d+" 日 "+h+" 時 "+m+" 分 "+s+" 秒 (" + monthCount +"個月)";
   message.text += " / nod 收集數量 : " + fireObjects.length + " 個";
 }
 function gameLoop(){
@@ -440,6 +464,21 @@ function gameLoop(){
 }
 setup();
 //------------------------------------------------------------------------------------------------
+function shootLove() {
+    var newLove = new Sprite(loveTextures[Math.floor(Math.random() * 4)]);
+    newLove.pivot.set(75, 75);
+    newLove.position.set(Math.floor(Math.random() * 2000),-100);
+    newLove.willBeDead = true;
+    var atx = 0, aty = 9.0;
+    setFireObjectHorizontalPlane(newLove);
+    setPhysics(newLove,0,0,atx,aty,newLove.horizontalPlane,true,false,false,false);
+    setRotation(newLove,0,true,2,-1); 
+    setMoving(newLove,false,60.0,0.0,newLove.horizontalPlane);
+    newLove.randomMovingTime = 3.0;
+    setScale(newLove,0.7,true,1,-1);
+    newLove.isFiring = false;
+    stage.addChild(newLove);
+}
 function shootNod(event) {
   for(var i = 0 ; i < 10 ; i++){
     var newNod = new Sprite(nodTexture);
@@ -535,6 +574,7 @@ function onFlagDown() {
     tempCover = new Container();
     setHitArea(tempCover,0,0,2000,800);
     tempCover.on('pointerdown', onTempCoverDown)
+             .on('pointerupoutside', onTempCoverUp)
              .on('pointerup', onTempCoverUp);
     tempCover.zIndex = 200;
     boatFlagZone.zIndex = 201;
