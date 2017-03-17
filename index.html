@@ -61,7 +61,7 @@ var scaleV = [0.0,0.0005,0.002,0.005,0.05];
 var scaleXMax = [0.0,0.02,0.05,0.1,0.5];
 var scaleYMax = [0.0,0.02,0.05,0.1,0.5];
 
-var nodTexture, nodInBoatWidth = 10, nodInBoatHeight = 10;
+var nodTextures, nodInBoatWidth = 10, nodInBoatHeight = 10;
 var isFireMode = false, isBursting = false, tempCover, fireHeart;
 
 var loveTextures, shootLoveTime = 60;
@@ -104,8 +104,9 @@ function setup() {
   stage.addChild(fireHeart);
 
   //nodTexture = Texture.fromImage('http://i.imgur.com/LDd4k1C.gif');
-  nodTexture = Texture.fromImage('http://i.imgur.com/FdOopTP.png');
-  nodTexture = Texture.fromImage('http://i.imgur.com/MVShpUE.png');
+  nodTextures = [];
+  nodTextures.push(Texture.fromImage('http://i.imgur.com/LDd4k1C.gif'));
+  nodTextures.push(Texture.fromImage('http://i.imgur.com/MVShpUE.png'));
 
   loveTextures = [];
   loveTextures.push(Texture.fromImage('http://i.imgur.com/2mjVDyP.png'));
@@ -428,12 +429,13 @@ function updateState() {
       else{
         physicsObjects[i].isInFlow = true;
         if(i!==0 && i!==1){
-          if(!physicsObjects[i].isMoving && physicsObjects[0].isInFlow){
+          if(!physicsObjects[i].isMoving && physicsObjects[physicsObjects[i].typePW].isInFlow){
             setMoving(physicsObjects[i],true,10,Math.floor(Math.random() * 101)-50,
               Math.floor(Math.random() * 21)-10 + 70);
             physicsObjects[i].zIndex = 70.0 + Math.floor(Math.random() * 2) - 1;
           }
-          if(physicsObjects[i].isMoving) movingMagic(physicsObjects[i],sheepZone);
+          if(physicsObjects[i].isMoving) 
+            movingMagic(physicsObjects[i],physicsObjects[physicsObjects[i].typePW]);
         }
         physicsObjects[i].rotationValue = 3;
         physicsObjects[i].x += flowZone.flowSpeed; 
@@ -465,7 +467,9 @@ function gameLoop(){
 setup();
 //------------------------------------------------------------------------------------------------
 function shootLove() {
-    var newLove = new Sprite(loveTextures[Math.floor(Math.random() * 4)]);
+    var i = Math.floor(Math.random() * 4);
+    var newLove = new Sprite(loveTextures[i]);
+    newLove.typePW = i%2;
     newLove.pivot.set(75, 75);
     newLove.position.set(Math.floor(Math.random() * 2000),-100);
     newLove.willBeDead = true;
@@ -481,7 +485,8 @@ function shootLove() {
 }
 function shootNod(event) {
   for(var i = 0 ; i < 10 ; i++){
-    var newNod = new Sprite(nodTexture);
+    var newNod = new Sprite(nodTextures[i%2]);
+    newNod.typePW = i%2;
     newNod.pivot.set(205, 176);
     newNod.position.set(event.data.getLocalPosition(this.parent).x,event.data.getLocalPosition(this.parent).y);
     newNod.willBeDead = true;
