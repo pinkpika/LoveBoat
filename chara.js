@@ -1,3 +1,4 @@
+var charas = [];
 var sheepZone, sheep, sheepBright;
 sheepZone = new Container();
 var pinkZone, pink, pinkBright;
@@ -26,18 +27,18 @@ sheepZone.setup = function(){
   this.randomMovingTime = 3.0; 
   this.isFiring = false;
   setScale(this,0.8,true,1,-1);
+  charas.push(this);
 };
-
 pinkZone.setup = function(){
   this.textures = [];
-  this.textures.push(Texture.fromImage('http://i.imgur.com/AeuARUH.png')); //pink
-  this.textures.push(Texture.fromImage('http://i.imgur.com/ESwJe93.png')); //pinkLove
-  this.textures.push(Texture.fromImage('http://i.imgur.com/ykXk0nY.png')); //pinkBright
-  this.textures.push(Texture.fromImage('http://i.imgur.com/80A1hdv.png')); //pinkDrag
-  //this.textures.push(Texture.fromImage('http://i.imgur.com/Z5hkuz8.png')); //pink
-  //this.textures.push(Texture.fromImage('http://i.imgur.com/8ymjOwl.png')); //pinkLove
+  //this.textures.push(Texture.fromImage('http://i.imgur.com/AeuARUH.png')); //pink
+  //this.textures.push(Texture.fromImage('http://i.imgur.com/ESwJe93.png')); //pinkLove
   //this.textures.push(Texture.fromImage('http://i.imgur.com/ykXk0nY.png')); //pinkBright
-  //this.textures.push(Texture.fromImage('http://i.imgur.com/ErJ36Xy.gif')); //pinkDrag
+  //this.textures.push(Texture.fromImage('http://i.imgur.com/80A1hdv.png')); //pinkDrag
+  this.textures.push(Texture.fromImage('http://i.imgur.com/Z5hkuz8.png')); //pink
+  this.textures.push(Texture.fromImage('http://i.imgur.com/8ymjOwl.png')); //pinkLove
+  this.textures.push(Texture.fromImage('http://i.imgur.com/ykXk0nY.png')); //pinkBright
+  this.textures.push(Texture.fromImage('http://i.imgur.com/ErJ36Xy.gif')); //pinkDrag
   this.pivot.set(110, 160); 
   this.position.set(1170, 200);
   this.on('pointerdown', onCharaDown).on('pointerup', onCharaUp)
@@ -55,8 +56,49 @@ pinkZone.setup = function(){
   this.randomMovingTime = 3.0;
   this.isFiring = false; 
   setScale(this,0.8,true,1,-1);
+  charas.push(this);
 };
-
+//------------------------------------------------------------------------------------------------
+function charaUpdate(){
+  if(this.x > 2500.0){
+    this.x = 1000; this.y = -400; this.isInFlow = false; this.isFalling = true;
+    return;
+  }
+  if(this.isFalling){
+    this.vy += ( 0.07 * this.aty );
+    this.x += this.vx; this.y += ( this.vy + this.aty ) ;
+    this.children[1].texture = this.textures[3]; 
+    if(this.vy > 0 && this.y >= this.horizontalPlane){ 
+      this.isFalling = false; this.isInFlow = true;
+      this.vy = 0;
+    }
+  }
+  else if(this.dragging){}
+  else if(this.isInBoat){
+    if(!this.isMoving && randomMovingTimeCount<0.0 && Math.floor(Math.random()*2)<1.0){
+      setMoving(this,true,30,
+        Math.floor(Math.random()*300)-150,this.horizontalPlane-boatZone.y);
+    }
+    if(this.isMoving) movingMagic(this,boatZone);
+    if(!boatZone.isStop) this.x += ( boatZone.vx + boatZone.atx ) ;
+  }
+  if(this.isInFlow){
+    if(this.x < (boatZone.x + 280) && this.x > (boatZone.x - 280) ){ 
+      this.isInBoat = true; this.isInFlow = false; 
+      this.rotationValue = 1;
+      this.children[1].texture = this.textures[0]; 
+      setMoving(this,true,30,0,this.horizontalPlane-boatZone.y);
+    }
+    else{
+      this.rotationValue = 3;
+      this.x += flowZone.flowSpeed; 
+    }
+  }
+  rotateMagic(this);
+  scaleMagic(this,-1.0);
+}
+sheepZone.updateSP = function(){};
+pinkZone.updateSP = function(){};
 //------------------------------------------------------------------------------------------------
 function onCharaDown(event) {
 	this.children[1].texture = this.textures[3];

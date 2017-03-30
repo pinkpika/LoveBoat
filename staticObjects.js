@@ -74,6 +74,29 @@ loveLightZone.setup = function(){
   stage.addChild(this);
 };
 //------------------------------------------------------------------------------------------------
+landZone.update = function(){
+  landZone.x += 4;
+  if(landZone.x >= 0) landZone.x = -4000;
+};
+flowZone.update = function(){
+  flowZone.x += 3;
+  if(flowZone.x >= 0) flowZone.x = -4000;
+};
+mountainZone.update = function(){
+  mountainZone.x += 1;
+  if(mountainZone.x >= 0) mountainZone.x = -4000;
+};
+whaleZone.update = function(){
+  if(isWaterGo){ 
+    if(!isWaterDown && waterColumn.scale.y < 15.0) waterColumn.scale.y += 1.0;
+    else {
+      isWaterDown = true ; 
+      if(isWaterDown && waterColumn.scale.y >= 1.0) waterColumn.scale.y -= 0.05;
+      else{ isWaterDown = false; isWaterGo = false ; }
+    }
+  }
+};
+//------------------------------------------------------------------------------------------------
 function onWhaleDown() {
   isWaterGo = true;
 }

@@ -13,7 +13,6 @@ function setPhysics(chara,vx,vy,atx,aty,horizontalPlane,isFalling,isInBoat,isInF
   chara.horizontalPlane = horizontalPlane;
   chara.isFalling = isFalling; chara.isInBoat = isInBoat; chara.isInFlow = isInFlow;
   chara.isMoving = isMoving;
-  physicsObjects.push(chara);
 }
 function setHitArea(chara,x,y,width,height){
   chara.interactive = true; chara.buttonMode = true;
@@ -34,6 +33,10 @@ function setDirMoving(chara,isMoving,movingSpeed,goalX,goalY){
   chara.goalX = goalX; chara.goalY = goalY; 
   chara.movingSpeedX = (goalX - chara.x) / movingSpeed;
   chara.movingSpeedY = (goalY - chara.y) / movingSpeed;
+}
+function setCirMoving(chara,movingAngle,angle,radius){
+  chara.movingAngle = movingAngle;
+  chara.angle = angle; chara.radius = radius;
 }
 function setScale(chara,oScale,scaleFlag,scaleValue,scaleTime){
   chara.scale.x = oScale; chara.scale.y = oScale; chara.scale.o = oScale;
@@ -81,6 +84,12 @@ function movingMagic(chara,goal) {
     chara.isMoving = false;
     chara.horizontalPlane = chara.y;
   }
+}
+function movingCirMagic(chara,goal,fixX,fixY) {
+  chara.x = goal.x + fixX + Math.cos(chara.angle) * chara.radius;
+  chara.y = goal.y + fixY + Math.sin(chara.angle) * chara.radius;
+  chara.angle += chara.movingAngle;
+  if(chara.angle > 6.28) chara.angle = 0;
 }
 function rotateMagic(chara) {
   if(chara.rotation>rotationMax[chara.rotationValue]) {

@@ -51,6 +51,26 @@ boatZone.setup = function(){
   stage.addChild(boatFlagZone);
 };
 
+boatZone.update = function(){
+  //boat--------------------------
+  if(boatZone.x >= boatZone.stopLine && !boatZone.isAccelerate) boatZone.isStop = true;
+  else boatZone.isStop = false;
+  if(boatZone.isAccelerate) boatZone.atx += 0.2;
+  if(boatZone.atx >= 0.0) boatZone.isAccelerate = false;
+  if(!boatZone.isStop){ 
+    boatZone.x += ( boatZone.vx + boatZone.atx );
+    boatFlagZone.x = boatZone.x;
+    boatBanbanZone.x = boatZone.x;
+  }
+  rotateMagic(boatZone); rotateMagic(boatFlagZone); rotateMagic(boatBanbanZone); 
+  scaleMagic(boatZone,1.0);  scaleMagic(boatFlagZone,1.0); scaleMagic(boatBanbanZone,1.0); 
+  //boatPaddle--------------------
+  boatPaddle.rotation += boatPaddleRo;
+  if(boatPaddle.rotation < -6.28){ boatPaddleRo = 0.0;
+    boatPaddle.rotation = 0.0;
+  }
+};
+
 //------------------------------------------------------------------------------------------------
 function onFlagDown() {
   isFireMode = !isFireMode;
