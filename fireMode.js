@@ -127,9 +127,9 @@ function nodUpdate(i){
 function createTempCover(){
   tempCover = new Container();
   setHitArea(tempCover,0,0,2000,800);
-  tempCover.on('pointerdown', onTempCoverDown).on('touchstart', onTempCoverDown)
-           .on('pointerupoutside', onTempCoverUp).on('touchendoutside', onTempCoverUp)
-           .on('pointerup', onTempCoverUp).on('touchend', onTempCoverUp);
+  tempCover.on('pointerdown', onTempCoverDown)
+           .on('pointerupoutside', onTempCoverUp)
+           .on('pointerup', onTempCoverUp);
   tempCover.zIndex = 200;
   boatFlagZone.zIndex = 201;
   stage.addChild(tempCover);

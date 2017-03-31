@@ -47,7 +47,7 @@ boatZone.setup = function(){
   flag.anchor.set(0.5, 1.0);
   flag.pivot.set(0.0, 0.0);
   flag.position.set(200, -400);
-  flag.on('pointerdown', onFlagDown).on('touchstart', onFlagDown);
+  flag.on('pointerdown', onFlagDown);
   setHitArea(flag,-250,-250,200,200);
   boatFlagZone.addChild(flag);
   stage.addChild(boatFlagZone);
