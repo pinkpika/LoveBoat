@@ -103,3 +103,13 @@ function rotateMagic(chara) {
   if(chara.rotationFlag) chara.rotation += rotationV[chara.rotationValue]; 
   else chara.rotation -= rotationV[chara.rotationValue];
 }
+
+//-------------------------------------
+function timeControl(func,time,timeO,x,y,movingX,movingY,zIndex){
+  time--;
+  if(time < 0.0){ 
+    func(x,y,movingX,movingY,zIndex); 
+    time = timeO; 
+  }
+  return time;
+}

@@ -5,6 +5,8 @@ var boatBanbanZone, banban;
 
 var boatPaddleRo = 0.0;
 
+var pLoveBoatBanbanTimeO = 1 , pLoveBoatBanbanTime = pLoveBoatBanbanTimeO;
+
 boatZone.setup = function(){
   this.position.set(1000, 670);
   this.vx = 1.0; this.atx = 0;
@@ -64,10 +66,19 @@ boatZone.update = function(){
   }
   rotateMagic(boatZone); rotateMagic(boatFlagZone); rotateMagic(boatBanbanZone); 
   scaleMagic(boatZone,1.0);  scaleMagic(boatFlagZone,1.0); scaleMagic(boatBanbanZone,1.0); 
-  //boatPaddle--------------------
+  //boatPaddleZone--------------------
   boatPaddle.rotation += boatPaddleRo;
   if(boatPaddle.rotation < -6.28){ boatPaddleRo = 0.0;
     boatPaddle.rotation = 0.0;
+  }
+  //boatBanbanZone--------------------
+  if(isFireMode){ 
+    pLoveBoatBanbanTime = 
+    timeControl(particleLove,pLoveBoatBanbanTime,pLoveBoatBanbanTimeO,
+      boatZone.x+40,boatZone.y-450,
+      Math.cos(Math.random()*Math.PI*2) * (Math.random()*20 + 20),
+      Math.sin(Math.random()*Math.PI*2) * (Math.random()*20 + 20),
+      boatBanbanZone.zIndex-0.1*Math.random());
   }
 };
 

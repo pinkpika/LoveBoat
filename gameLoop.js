@@ -14,6 +14,7 @@ function allSetup() {
   message.setup();
 
   setupFireMode();
+  setupParticleObjects();
 
   skyZone.zIndex = 0;
   mountainZone.zIndex = 10;
@@ -35,14 +36,9 @@ function allSetup() {
 }
 //------------------------------------------------------------------------------------------------
 function updateState() {
-  //sort-----------------------
-  stage.children.sort(function(a,b) { 
-    a.zIndex = a.zIndex || 0;
-    b.zIndex = b.zIndex || 0;
-    return a.zIndex - b.zIndex;
-  }); 
 
   if(isShootLoveMode) updateShootLove();
+  if(isCircleLightMode) updateCircleLight();
 
   boatZone.update();
 
@@ -60,12 +56,23 @@ function updateState() {
   sheepZone.updateSP();
   pinkZone.updateSP();
 
-  for(i = 0; i< physicsObjects.length;i++){
+  for(var i = 0; i< physicsObjects.length;i++){
     i = nodUpdate.call(physicsObjects[i],i);
   }
   if(randomMovingTimeCount < 0.0 ) randomMovingTimeCount = randomMovingTime ;
 
+  for(var i = 0; i< particleObjects.length;i++){
+    i = particleUpdate.call(particleObjects[i],i);
+  }
+
   if(isFireMode) updateFire();
+
+  //sort-----------------------
+  stage.children.sort(function(a,b) { 
+    a.zIndex = a.zIndex || 0;
+    b.zIndex = b.zIndex || 0;
+    return a.zIndex - b.zIndex;
+  }); 
 }
 function gameLoop(){
   requestAnimationFrame(gameLoop);

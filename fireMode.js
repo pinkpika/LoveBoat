@@ -1,7 +1,7 @@
 var fireObjects = [];
 var nodTextures, nodInBoatWidth = 10, nodInBoatHeight = 10;
 var isFireMode = false, isBursting = false, tempCover, fireHeart;
-var isShootLoveMode = true, loveTextures, shootLoveTime = 30;
+var isShootLoveMode = true, loveTextures, shootLoveTimeO = 30 , shootLoveTime = shootLoveTimeO;
 
 function setupFireMode(){
 	fireHeart = new Sprite(Texture.fromImage('http://i.imgur.com/iEVTQwn.png'));
@@ -54,7 +54,7 @@ function shootNod(event) {
     newNod.isFiring = false;
     stage.addChild(newNod);
     physicsObjects.push(newNod);
-    setCirMoving(newNod,Math.random()/10.0,Math.random()*6.28,50);
+    setCirMoving(newNod,0.05,Math.random()*Math.PI*2,50);
   }
 }
 function setFireObjectHorizontalPlane(chara){
@@ -159,11 +159,11 @@ function shootLove() {
     newLove.isFiring = false;
     stage.addChild(newLove);
     physicsObjects.push(newLove);
-    setCirMoving(newLove,Math.random()/10.0,Math.random()*6.28,150);
+    setCirMoving(newLove,0.05,Math.random()*Math.PI*2,170);
 }
 function updateShootLove() {
   shootLoveTime --;
   if(shootLoveTime < 0){
-    shootLove(); shootLoveTime = 30;
+    shootLove(); shootLoveTime = shootLoveTimeO;
   }
 }
