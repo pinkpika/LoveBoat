@@ -3,8 +3,9 @@ var Container = PIXI.Container,
     loader = PIXI.loader,
     resources = PIXI.loader.resources,
     TextureCache = PIXI.utils.TextureCache,
-    Sprite = PIXI.Sprite;
-    Texture = PIXI.Texture;
+    Sprite = PIXI.Sprite,
+    Texture = PIXI.Texture,
+    Interaction = PIXI.interaction;
 
 var zoneProportion = 2000 / 800;
 var renderer = autoDetectRenderer(2000, 800);

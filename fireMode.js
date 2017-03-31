@@ -2,6 +2,7 @@ var fireObjects = [];
 var nodTextures, nodInBoatWidth = 10, nodInBoatHeight = 10;
 var isFireMode = false, isBursting = false, tempCover, fireHeart;
 var isShootLoveMode = true, loveTextures, shootLoveTimeO = 30 , shootLoveTime = shootLoveTimeO;
+var nowTouchX, nowTouchY;
 
 function setupFireMode(){
 	fireHeart = new Sprite(Texture.fromImage('http://i.imgur.com/iEVTQwn.png'));
@@ -21,14 +22,12 @@ function setupFireMode(){
   loveTextures.push(Texture.fromImage('http://i.imgur.com/YZXw3zM.png'));
 }
 function updateFire(){
-  fireHeart.position.set(renderer.plugins.interaction.mouse.global.x,
-      renderer.plugins.interaction.mouse.global.y);
+  fireHeart.position.set(nowTouchX, nowTouchY);
   scaleMagic(fireHeart,1.0); 
   if(isBursting && fireObjects.length > 0){
     movingCirMagic(fireObjects[fireObjects.length-1],boatZone,40,-450);
     setDirMoving(fireObjects[fireObjects.length-1],true,20.0,
-      renderer.plugins.interaction.mouse.global.x,
-      renderer.plugins.interaction.mouse.global.y);
+      nowTouchX, nowTouchY);
     fireObjects[fireObjects.length-1].isFiring = true;
     fireObjects[fireObjects.length-1].isInBoat = false;
     fireObjects.splice(fireObjects.length-1, 1);
@@ -128,6 +127,7 @@ function createTempCover(){
   tempCover = new Container();
   setHitArea(tempCover,0,0,2000,800);
   tempCover.on('pointerdown', onTempCoverDown)
+           .on('pointermove', onTempCoverMove)
            .on('pointerupoutside', onTempCoverUp)
            .on('pointerup', onTempCoverUp);
   tempCover.zIndex = 200;
@@ -135,8 +135,14 @@ function createTempCover(){
   stage.addChild(tempCover);
   fireHeart.visible = true;
 }
-function onTempCoverDown(){
+function onTempCoverDown(event){
   isBursting = true;
+  nowTouchX = event.data.getLocalPosition(this.parent).x ;
+  nowTouchY = event.data.getLocalPosition(this.parent).y ;
+}
+function onTempCoverMove(event){
+  nowTouchX = event.data.getLocalPosition(this.parent).x ;
+  nowTouchY = event.data.getLocalPosition(this.parent).y ;
 }
 function onTempCoverUp(){
   isBursting = false;
