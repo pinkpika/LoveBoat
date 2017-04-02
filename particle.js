@@ -1,7 +1,7 @@
 var particleObjects = [];
 var particleLoveTextures, particleCircleTextures, particleCrossTextures;
-var isCircleLightMode = true, circleLightTimeO = 30, circleLightTime = circleLightTimeO;
-var isCrossStarMode = true, crossStarTimeO = 30, crossStarTime = crossStarTimeO;
+var isCircleLightMode = true, circleLightTimeO = 40, circleLightTime = circleLightTimeO;
+var isCrossStarMode = true, crossStarTimeO = 20, crossStarTime = crossStarTimeO;
 
 function setupParticleObjects(){
   particleLoveTextures = [];
@@ -15,6 +15,7 @@ function setupParticleObjects(){
   particleCircleTextures.push(Texture.fromImage('http://i.imgur.com/jtNG8vc.png'));
 
   particleCrossTextures = [];
+  particleCrossTextures.push(Texture.fromImage('http://i.imgur.com/eup7cdG.png'));
 }
 function particleLove(x,y,movingDirX,movingDirY,zIndex) {
   var i = Math.floor(Math.random() * 4);
@@ -32,7 +33,8 @@ function particleLove(x,y,movingDirX,movingDirY,zIndex) {
   particleObjects.push(newParLove);
   newParLove.tint = 0xF99393;
 }
-function particleCircle(x,y,movingDirX,movingDirY,zIndex) {
+//---------------------------------------------------------------------------------------------
+function particleCircleLight(x,y,movingDirX,movingDirY,zIndex) {
   var newParCircle = new Sprite(particleCircleTextures[1]);
   newParCircle.pivot.set(250, 250);
   newParCircle.position.set(x,y);
@@ -48,10 +50,31 @@ function particleCircle(x,y,movingDirX,movingDirY,zIndex) {
 }
 function updateCircleLight(){
   circleLightTime = 
-  timeControl(particleCircle,circleLightTime,circleLightTimeO,
+  timeControl(particleCircleLight,circleLightTime,circleLightTimeO,
   Math.random()*2000-1000,Math.random()*800-400,
   Math.random()*1000,Math.random()*400,
   1000);
+}
+//---------------------------------------------------------------------------------------------
+function particleCrossStar(x,y,movingDirX,movingDirY,zIndex) {
+  var newParCross = new Sprite(particleCrossTextures[0]);
+  newParCross.pivot.set(50, 50);
+  newParCross.position.set(x,y);
+  newParCross.lifeCount = 2;
+  setRotation(newParCross,0,true,2,-1);
+  setScale(newParCross,Math.random()*0.2+0.3,true,2,-1);
+  setDirMoving(newParCross,true,60,x+Math.random()*20,y);
+  newParCross.alpha = 0.01;
+  newParCross.alphaMoving = 0.01;
+  stage.addChild(newParCross);
+  newParCross.zIndex = zIndex;
+  particleObjects.push(newParCross);
+}
+function updateCrossStar(){
+  crossStarTime = 
+  timeControl(particleCrossStar,crossStarTime,crossStarTimeO,
+  Math.random()*2000,Math.random()*600,0,0,
+  5 + Math.random() );
 }
 //---------------------------------------------------------------------------------------------
 function particleUpdate(i){

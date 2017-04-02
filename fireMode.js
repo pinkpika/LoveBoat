@@ -1,7 +1,7 @@
 var fireObjects = [];
 var nodTextures, nodInBoatWidth = 10, nodInBoatHeight = 10;
 var isFireMode = false, isBursting = false, tempCover, fireHeart;
-var isShootLoveMode = true, loveTextures, shootLoveTimeO = 30 , shootLoveTime = shootLoveTimeO;
+var isShootLoveMode = true, loveTextures, shootLoveTimeO = 300 , shootLoveTime = shootLoveTimeO;
 var nowTouchX, nowTouchY;
 
 function setupFireMode(){
@@ -143,6 +143,7 @@ function onTempCoverDown(event){
 function onTempCoverMove(event){
   nowTouchX = event.data.getLocalPosition(this.parent).x ;
   nowTouchY = event.data.getLocalPosition(this.parent).y ;
+  console.log(nowTouchX+" "+nowTouchY);
 }
 function onTempCoverUp(){
   isBursting = false;

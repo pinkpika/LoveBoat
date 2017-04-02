@@ -38,8 +38,10 @@ function allSetup() {
 function updateState() {
 
   if(isShootLoveMode) updateShootLove();
-  if(isCircleLightMode) updateCircleLight();
 
+  if(isCircleLightMode) updateCircleLight();
+  if(isCrossStarMode) updateCrossStar();
+  
   boatZone.update();
 
   landZone.update();
