@@ -1,8 +1,11 @@
 var physicsObjects = [];
 function allSetup() {
 
+  setupToolObjects();
+
   sheepZone.setup();
   pinkZone.setup();
+
   boatZone.setup();
 
   landZone.setup();
@@ -11,12 +14,18 @@ function allSetup() {
   whaleZone.setup();
   skyZone.setup();
   loveLightZone.setup();
+  sunZone.setup();
+  moonZone.setup();
   message.setup();
 
   setupFireMode();
   setupParticleObjects();
 
   skyZone.zIndex = 0;
+  sunZone.zIndex = 2;
+  //stars = 5.0;
+  moonZone.zIndex = 5.999;
+  sunZone.zIndex = 6;
   mountainZone.zIndex = 10;
   whaleZone.zIndex = 49.9999;
   flowZone.zIndex = 50;
@@ -48,6 +57,9 @@ function updateState() {
   flowZone.update();
   mountainZone.update();
   whaleZone.update();
+  skyZone.update();
+  sunZone.update();
+  moonZone.update();
 
   message.update();
 

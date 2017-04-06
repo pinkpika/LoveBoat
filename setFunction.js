@@ -85,6 +85,15 @@ function movingMagic(chara,goal) {
     chara.horizontalPlane = chara.y;
   }
 }
+function movingMagicNoSetH(chara,goal) {
+  var tempX = goal.x + chara.goalX - chara.x;
+  var tempY = goal.y + chara.goalY - chara.y;
+  chara.x += tempX/chara.movingSpeed;
+  chara.y += tempY/chara.movingSpeed;
+  if(Math.abs(tempX) < 5.0 && Math.abs(tempY) < 5.0 ){
+    chara.isMoving = false;
+  }
+}
 function movingCirMagic(chara,goal,fixX,fixY) {
   chara.x = goal.x + fixX + Math.cos(chara.angle) * chara.radius;
   chara.y = goal.y + fixY + Math.sin(chara.angle) * chara.radius;
