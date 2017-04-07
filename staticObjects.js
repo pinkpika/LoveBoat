@@ -143,6 +143,12 @@ skyZone.update = function(){
     skyDay.alpha = ((h - fullNightEnd)*60*60 + m*60 + s) / ((fullDayStart - fullNightEnd)*60*60);
     skyNight.alpha = 1.0 - skyDay.alpha ;
   }
+  else if(h >= fullDayStart && h <= (fullDayEnd-1)){
+    skyDay.alpha = 1.0; skyNight.alpha = 0.0;
+  }
+  else{
+    skyDay.alpha = 0.0; skyNight.alpha = 1.0;
+  }
 }
 sunZone.update = function(){
   this.randomTime--;
