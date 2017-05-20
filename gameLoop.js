@@ -17,6 +17,7 @@ function allSetup() {
   sunZone.setup();
   moonZone.setup();
   message.setup();
+  messageControl.setup();
 
   setupFireMode();
   setupParticleObjects();
@@ -38,6 +39,7 @@ function allSetup() {
   fireHeart.zIndex = 300;
   loveLightZone.zIndex = 500;
   message.zIndex = 1000;
+  messageControl.zIndex = 1000;
 
   if(isDebugHitArea) debugSetupHitArea();
   
