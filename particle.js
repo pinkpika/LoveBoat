@@ -43,7 +43,7 @@ function setupParticleObjects(){
   particleMemoryTexture.push(Texture.fromImage('http://i.imgur.com/Ygqvgc7.png'));
   particleMemoryTexture.push(Texture.fromImage('http://i.imgur.com/C4FWOPU.png'));
   particleMemoryTexture.push(Texture.fromImage('http://i.imgur.com/aWkijDC.png'));
-  particleMemoryTexture.push(Texture.fromImage('http://i.imgur.com/fg0yijE.png'));
+  particleMemoryTexture.push(Texture.fromImage('http://i.imgur.com/yIdjdAX.png'));
 }
 //---------------------------------------------------------------------------------------------
 function particleLove(x,y,movingDirX,movingDirY,zIndex) {
