@@ -2,8 +2,8 @@ var particleObjects = [];
 var particleLoveTextures, particleCircleTextures, particleCrossTextures;
 var particleZZZTexture;
 var particleBubbleTexture, particleMemoryTexture;
-var isCircleLightMode = false, circleLightTimeO = 40, circleLightTime = circleLightTimeO;
-var isCrossStarMode = false, crossStarTimeO = 20, crossStarTime = crossStarTimeO;
+var isCircleLightMode = true, circleLightTimeO = 40, circleLightTime = circleLightTimeO;
+var isCrossStarMode = true, crossStarTimeO = 20, crossStarTime = crossStarTimeO;
 var isMemoryBubbleMode = true, memoryBubbleTimeO = 240, memoryBubbleTime = memoryBubbleTimeO;
 var ZZZTimeO = 60, ZZZTime = ZZZTimeO;
 
