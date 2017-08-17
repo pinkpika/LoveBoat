@@ -25,7 +25,8 @@ function updateFire(){
   fireHeart.position.set(nowTouchX, nowTouchY);
   scaleMagic(fireHeart,1.0); 
   if(isBursting && fireObjects.length > 0){
-    movingCirMagic(fireObjects[fireObjects.length-1],boatZone,40,-450);
+    //movingCirMagic(fireObjects[fireObjects.length-1],boatZone,40,-450);
+    movingHeartMagic(fireObjects[fireObjects.length-1],boatZone,40,-450);
     setDirMoving(fireObjects[fireObjects.length-1],true,20.0,
       nowTouchX, nowTouchY);
     fireObjects[fireObjects.length-1].isFiring = true;
@@ -54,6 +55,7 @@ function shootNod(event) {
     stage.addChild(newNod);
     physicsObjects.push(newNod);
     setCirMoving(newNod,0.05,Math.random()*Math.PI*2,50);
+    setHeartMoving(newNod,Math.random()*heartXMax*2-heartXMax,(Math.pow(-1,Math.floor(Math.random()*2)))*defaultHeartM);
   }
 }
 function setFireObjectHorizontalPlane(chara){
@@ -89,7 +91,11 @@ function nodUpdate(i){
     }
   }
   else if(this.isInBoat){
-    if(isFireMode){ movingCirMagic(this,boatZone,40,-450); this.isMoving = true; }
+    if(isFireMode){ 
+      //movingCirMagic(this,boatZone,40,-450);
+      movingHeartMagic(this,boatZone,40,-450);
+      this.isMoving = true; 
+    }
     if(!this.isMoving && randomMovingTimeCount<0.0 && Math.floor(Math.random()*2)<1.0){
       setMoving(this,true,30,
         Math.floor(Math.random()*300)-150,this.horizontalPlane-boatZone.y);
@@ -167,6 +173,7 @@ function shootLove() {
     stage.addChild(newLove);
     physicsObjects.push(newLove);
     setCirMoving(newLove,0.05,Math.random()*Math.PI*2,170);
+    setHeartMoving(newLove,Math.random()*heartXMax*2-heartXMax,(Math.pow(-1,Math.floor(Math.random()*2)))*defaultHeartM);
 }
 function updateShootLove() {
   shootLoveTime --;

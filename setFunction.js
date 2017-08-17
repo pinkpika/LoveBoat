@@ -8,6 +8,9 @@ var scaleV = [0.0,0.0005,0.002,0.005,0.05];
 var scaleXMax = [0.0,0.02,0.05,0.1,0.5];
 var scaleYMax = [0.0,0.02,0.05,0.1,0.5];
 
+var heartXMax = 1.56;
+var defaultHeartM = heartXMax / 1440;
+
 function setPhysics(chara,vx,vy,atx,aty,horizontalPlane,isFalling,isInBoat,isInFlow,isMoving){
   chara.vx = vx; chara.vy = vy; chara.atx = atx; chara.aty = aty;
   chara.horizontalPlane = horizontalPlane;
@@ -37,6 +40,9 @@ function setDirMoving(chara,isMoving,movingSpeed,goalX,goalY){
 function setCirMoving(chara,movingAngle,angle,radius){
   chara.movingAngle = movingAngle;
   chara.angle = angle; chara.radius = radius;
+}
+function setHeartMoving(chara,heartX,heartM){
+  chara.heartX = heartX; chara.heartM = heartM;
 }
 function setScale(chara,oScale,scaleFlag,scaleValue,scaleTime){
   chara.scale.x = oScale; chara.scale.y = oScale; chara.scale.o = oScale;
@@ -99,6 +105,14 @@ function movingCirMagic(chara,goal,fixX,fixY) {
   chara.y = goal.y + fixY + Math.sin(chara.angle) * chara.radius;
   chara.angle += chara.movingAngle;
   if(chara.angle > 6.28) chara.angle = 0;
+}
+function movingHeartMagic(chara,goal,fixX,fixY){
+  chara.x = goal.x + fixX + chara.heartX * 100;
+  var temp = 4-chara.heartX*chara.heartX;
+  var heartY = (Math.sqrt(Math.cos(chara.heartX)) * Math.cos(200*chara.heartX) + Math.sqrt(Math.abs(chara.heartX))-0.7) * Math.pow(temp,0.01);
+  chara.y = goal.y + fixY - heartY * 100;
+  chara.heartX += chara.heartM;
+  if(Math.abs(chara.heartX)>heartXMax) chara.heartM = -chara.heartM;
 }
 function rotateMagic(chara) {
   if(chara.rotation>rotationMax[chara.rotationValue]) {

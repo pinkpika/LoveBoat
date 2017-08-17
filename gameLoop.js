@@ -53,6 +53,8 @@ function updateState() {
   if(isCircleLightMode) updateCircleLight();
   if(isCrossStarMode) updateCrossStar();
   
+  if(isMemoryBubbleMode) updateMemoryBubble();
+  
   boatZone.update();
 
   landZone.update();
