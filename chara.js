@@ -8,17 +8,31 @@ var sleepTimeStart = 22, sleepTimeEnd = 8;
 
 sheepZone.setup = function(){
   this.textures = [];
+	/*
   this.textures.push(Texture.fromImage('http://i.imgur.com/i3mKQEx.png')); //sheep
   this.textures.push(Texture.fromImage('http://i.imgur.com/qMolVry.png')); //sheepBright
   this.textures.push(Texture.fromImage('http://i.imgur.com/kHDTsiU.png')); //sheepLove
   this.textures.push(Texture.fromImage('http://i.imgur.com/Fxdv48h.gif')); //sheepDrag
   this.textures.push(Texture.fromImage('http://i.imgur.com/vFVYoEH.png')); //sheepSleep
+  */
+  this.textures.push(Texture.fromImage('http://i.imgur.com/d9xILqY.png')); //sheepC
+  this.textures.push(Texture.fromImage('http://i.imgur.com/qMolVry.png')); //sheepBright
+  this.textures.push(Texture.fromImage('http://i.imgur.com/yoHDNdx.png')); //sheepLoveC
+  this.textures.push(Texture.fromImage('http://i.imgur.com/yoHDNdx.png')); //sheepDrag
+  this.textures.push(Texture.fromImage('http://i.imgur.com/mS7iyev.png')); //sheepSleepC
   this.texturesO = [];
+	/*
   this.texturesO.push(Texture.fromImage('http://i.imgur.com/i3mKQEx.png')); //sheep
   this.texturesO.push(Texture.fromImage('http://i.imgur.com/qMolVry.png')); //sheepBright
   this.texturesO.push(Texture.fromImage('http://i.imgur.com/kHDTsiU.png')); //sheepLove
   this.texturesO.push(Texture.fromImage('http://i.imgur.com/Fxdv48h.gif')); //sheepDrag
   this.texturesO.push(Texture.fromImage('http://i.imgur.com/vFVYoEH.png')); //sheepSleep
+  */
+  this.texturesO.push(Texture.fromImage('http://i.imgur.com/d9xILqY.png')); //sheepC
+  this.texturesO.push(Texture.fromImage('http://i.imgur.com/qMolVry.png')); //sheepBright
+  this.texturesO.push(Texture.fromImage('http://i.imgur.com/yoHDNdx.png')); //sheepLoveC
+  this.texturesO.push(Texture.fromImage('http://i.imgur.com/yoHDNdx.png')); //sheepDrag
+  this.texturesO.push(Texture.fromImage('http://i.imgur.com/mS7iyev.png')); //sheepSleepC
   this.pivot.set(110, 160); 
   this.position.set(1000, 200);
   this.on('pointerdown', onCharaDown).on('pointerup', onCharaUp)
@@ -47,21 +61,31 @@ sheepZone.setup = function(){
 };
 pinkZone.setup = function(){
   this.textures = [];
+/*
   this.textures.push(Texture.fromImage('http://i.imgur.com/Z5hkuz8.png')); //pink
   this.textures.push(Texture.fromImage('http://i.imgur.com/ykXk0nY.png')); //pinkBright
   this.textures.push(Texture.fromImage('http://i.imgur.com/8ymjOwl.png')); //pinkLove
   this.textures.push(Texture.fromImage('http://i.imgur.com/ErJ36Xy.gif')); //pinkDrag
   this.textures.push(Texture.fromImage('http://i.imgur.com/4rRwQpL.png')); //pinkSleep
-  //this.textures.push(Texture.fromImage('http://i.imgur.com/AeuARUH.png')); //pinkC
-  //this.textures.push(Texture.fromImage('http://i.imgur.com/ESwJe93.png')); //pinkLoveC
-  //this.textures.push(Texture.fromImage('http://i.imgur.com/ykXk0nY.png')); //pinkBrightC
-  //this.textures.push(Texture.fromImage('http://i.imgur.com/80A1hdv.png')); //pinkDragC
+*/
+  this.textures.push(Texture.fromImage('http://i.imgur.com/AeuARUH.png')); //pinkC
+  this.textures.push(Texture.fromImage('http://i.imgur.com/ykXk0nY.png')); //pinkBright
+  this.textures.push(Texture.fromImage('http://i.imgur.com/ESwJe93.png')); //pinkLoveC
+  this.textures.push(Texture.fromImage('http://i.imgur.com/80A1hdv.png')); //pinkDragC
+  this.textures.push(Texture.fromImage('http://i.imgur.com/fSgszBo.png')); //pinkSleepC
   this.texturesO = [];
+/*
   this.texturesO.push(Texture.fromImage('http://i.imgur.com/Z5hkuz8.png')); //pink
   this.texturesO.push(Texture.fromImage('http://i.imgur.com/ykXk0nY.png')); //pinkBright
   this.texturesO.push(Texture.fromImage('http://i.imgur.com/8ymjOwl.png')); //pinkLove
   this.texturesO.push(Texture.fromImage('http://i.imgur.com/ErJ36Xy.gif')); //pinkDrag
   this.texturesO.push(Texture.fromImage('http://i.imgur.com/4rRwQpL.png')); //pinkSleep
+*/
+  this.texturesO.push(Texture.fromImage('http://i.imgur.com/AeuARUH.png')); //pinkC
+  this.texturesO.push(Texture.fromImage('http://i.imgur.com/ykXk0nY.png')); //pinkBright
+  this.texturesO.push(Texture.fromImage('http://i.imgur.com/ESwJe93.png')); //pinkLoveC
+  this.texturesO.push(Texture.fromImage('http://i.imgur.com/80A1hdv.png')); //pinkDragC
+  this.texturesO.push(Texture.fromImage('http://i.imgur.com/fSgszBo.png')); //pinkSleepC
   this.pivot.set(110, 160); 
   this.position.set(1170, 200);
   this.on('pointerdown', onCharaDown).on('pointerup', onCharaUp)
