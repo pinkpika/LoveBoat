@@ -3,6 +3,7 @@ function allSetup() {
 
   setupToolObjects();
 
+  cameraZone.setup();
   sheepZone.setup();
   pinkZone.setup();
 
@@ -40,6 +41,7 @@ function allSetup() {
   loveLightZone.zIndex = 500;
   message.zIndex = 1000;
   messageControl.zIndex = 1000;
+  cameraZone.zIndex = 1000;
 
   if(isDebugHitArea) debugSetupHitArea();
   
@@ -69,6 +71,7 @@ function updateState() {
 
   randomMovingTimeCount -= 1.0/60.0;
 
+  cameraUpdate.call(cameraZone);
   charaUpdate.call(sheepZone);
   charaUpdate.call(pinkZone);
   sheepZone.updateSP();

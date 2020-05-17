@@ -6,6 +6,21 @@ pinkZone = new Container();
 
 var sleepTimeStart = 22, sleepTimeEnd = 8;
 
+var cameraZone, camera;
+cameraZone = new Container();
+
+cameraZone.setup = function(){
+  this.textures = [];
+  this.textures.push(Texture.fromImage('https://i.imgur.com/MNc8JYT.png'));
+  this.position.set(0, 675);
+  this.on('pointerdown', onCameraDown);
+  camera = new Sprite(this.textures[0]);
+  this.addChild(camera);
+  setHitArea(this,0,40,300,200);
+  setScale(this,0.5,true,1,-1);
+  stage.addChild(this);
+}
+
 sheepZone.setup = function(){
   this.textures = [];
 	/*
@@ -220,5 +235,27 @@ function onCharaDragMove(event) {
   if (this.dragging) {
     this.x = event.data.getLocalPosition(this.parent).x + this.fixX;
     this.y = event.data.getLocalPosition(this.parent).y + this.fixY;
+  }
+}
+//------------------------------------------------------------------------------------------------
+function cameraUpdate(){
+  scaleMagic(this,-1.0);
+}
+
+function onCameraDown(event) {
+  renderer.render(stage);
+  saveAs(renderer.view.toDataURL("image/jpeg"), 'canvas.png');
+}
+
+function saveAs(uri, filename) {
+  var link = document.createElement('a');
+  if (typeof link.download === 'string') {
+      link.href = uri;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+  } else {
+      window.open(uri);
   }
 }
