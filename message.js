@@ -1,7 +1,9 @@
 var message, messageOutput;
 var messageControl;
 var nowDate = new Date();
-var goBoatDate = new Date("2016-5-18 00:00:00");
+var endTime = '2016-5-18 00:00:00';
+endTime = endTime.replace(/\-/g, '/');
+var goBoatDate = new Date(endTime);
 var spantime, d, h, m, s;
 
 message = new PIXI.Text(messageOutput, {font: "26px sans-serif", fill: "white"} );

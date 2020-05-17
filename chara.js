@@ -244,7 +244,7 @@ function cameraUpdate(){
 
 function onCameraDown(event) {
   renderer.render(stage);
-  var fileName = getNowTime() + '_LoveBoat.png'
+  var fileName = getNowTime() + '_LoveBoat'
   saveAs(renderer.extract.canvas().toDataURL("image/jpeg"), fileName);
 }
 
@@ -262,7 +262,7 @@ function saveAs(uri, filename) {
 }
 
 function getNowTime(){
-	var timeDate= new Date();
+	var timeDate = new Date();
 	var tMonth = (timeDate.getMonth()+1) > 9 ? (timeDate.getMonth()+1) : '0'+(timeDate.getMonth()+1);
 	var tDate = timeDate.getDate() > 9 ? timeDate.getDate() : '0'+timeDate.getDate();
 	var tHours = timeDate.getHours() > 9 ? timeDate.getHours() : '0'+timeDate.getHours();
