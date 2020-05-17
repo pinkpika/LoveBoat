@@ -244,7 +244,7 @@ function cameraUpdate(){
 
 function onCameraDown(event) {
   renderer.render(stage);
-  saveAs(renderer.view.toDataURL("image/jpeg"), 'canvas.png');
+  saveAs(renderer.extract.canvas().toDataURL("image/jpeg"), 'canvas.png');
 }
 
 function saveAs(uri, filename) {
