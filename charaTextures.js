@@ -17,7 +17,7 @@ function getSheepTextures(type){
         textures.push(Texture.fromImage('https://i.imgur.com/40o2tmj.png')); //sheepwedding
         textures.push(Texture.fromImage('http://i.imgur.com/qMolVry.png')); //sheepBright
         textures.push(Texture.fromImage('https://i.imgur.com/VeHXTO8.png')); //sheepwedding2
-        textures.push(Texture.fromImage('')); //
+        textures.push(Texture.fromImage('https://i.imgur.com/U01Jhix.png')); //sheepwedding3
         textures.push(Texture.fromImage('https://i.imgur.com/VyVR0ln.png')); //sheepweddingsleep
     }
     return textures;
@@ -42,7 +42,7 @@ function getPinkTextures(type){
         textures.push(Texture.fromImage('https://i.imgur.com/TuaYFI2.png')); //pinkwedding
         textures.push(Texture.fromImage('http://i.imgur.com/ykXk0nY.png')); //pinkBright
         textures.push(Texture.fromImage('https://i.imgur.com/MUeIzsx.png')); //pinkwedding2
-        textures.push(Texture.fromImage('')); //
+        textures.push(Texture.fromImage('https://i.imgur.com/vY0FGlo.png')); //pinkwedding3
         textures.push(Texture.fromImage('https://i.imgur.com/SJPVj6I.png')); //pinkweddingsleep
     }
     return textures;

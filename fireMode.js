@@ -149,7 +149,7 @@ function onTempCoverDown(event){
 function onTempCoverMove(event){
   nowTouchX = event.data.getLocalPosition(this.parent).x ;
   nowTouchY = event.data.getLocalPosition(this.parent).y ;
-  console.log(nowTouchX+" "+nowTouchY);
+  //console.log(nowTouchX+" "+nowTouchY);
 }
 function onTempCoverUp(){
   isBursting = false;

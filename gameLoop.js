@@ -17,9 +17,11 @@ function allSetup() {
   loveLightZone.setup();
   sunZone.setup();
   moonZone.setup();
-  message.setup();
-  messageControl.setup();
+  dataMessageZone.setup();
+  settingTypeButton.setup();
   settingTypeZone.setup();
+  useMessageButton.setup();
+  useMessageZone.setup();
 
   setupFireMode();
   setupParticleObjects();
@@ -40,9 +42,11 @@ function allSetup() {
   landZone.zIndex = 100;
   fireHeart.zIndex = 300;
   loveLightZone.zIndex = 500;
-  message.zIndex = 1000;
-  messageControl.zIndex = 1000;
+  dataMessageZone.zIndex = 1000;
+  settingTypeButton.zIndex = 1000;
   settingTypeZone.zIndex = 1000;
+  useMessageButton.zIndex = 1000;
+  useMessageZone.zIndex = 1000;
   cameraZone.zIndex = 1000;
 
   if(isDebugHitArea) debugSetupHitArea();
@@ -69,7 +73,7 @@ function updateState() {
   sunZone.update();
   moonZone.update();
 
-  message.update();
+  dataMessageZone.update();
 
   randomMovingTimeCount -= 1.0/60.0;
 

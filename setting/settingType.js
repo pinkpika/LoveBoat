@@ -1,26 +1,48 @@
+var settingTypeButton = new Container();
 var settingTypeZone = new Container();
 var NbuttonZone = new Container();
 var CbuttonZone = new Container();
 var WbuttonZone = new Container();
 
+settingTypeButton.setup = function(){
+    this.position.set(10, 10);
+
+    var bg = new PIXI.Graphics();
+    bg.beginFill(0x000000, 0.5);
+    bg.drawRoundedRect(0,0,240,65,15);
+    this.addChild(bg);
+
+    var text = new PIXI.Text("[設定服裝]", {font: "48px sans-serif", fill: "white"} );
+    text.position.set(5, 5);
+    this.addChild(text);
+
+    this.isShow = false;
+    settingTypeZone.visible = false;
+    this.on('pointerdown', function(e) { 
+        this.isShow = !this.isShow;
+        settingTypeZone.visible = this.isShow;
+     });
+    setHitArea(this,0,0,240,65);
+    stage.addChild(this);
+};
+
 settingTypeZone.setup = function(){
 
-    this.position.set(2000 - 300, 0);
+    this.position.set(settingTypeButton.x, settingTypeButton.y + settingTypeButton.hitArea.height);
 
-    var sprite = new PIXI.Sprite(PIXI.Texture.WHITE);
-    sprite.tint = 0xff0000; //Change with the color wanted
-    sprite.width = 100;
-    sprite.height = 100;
-    this.addChild(sprite);
+    var bg = new PIXI.Graphics();
+    bg.beginFill(0x000000, 0.3);
+    bg.drawRoundedRect(0,0,300,170,15);
+    this.addChild(bg);
 
     NbuttonZone.setup();
-    NbuttonZone.position.set(0, 0);
+    NbuttonZone.position.set(5, 5);
     this.addChild(NbuttonZone);
     CbuttonZone.setup();
-    CbuttonZone.position.set(0, 50);
+    CbuttonZone.position.set(5, 60);
     this.addChild(CbuttonZone);
     WbuttonZone.setup();
-    WbuttonZone.position.set(0, 100);
+    WbuttonZone.position.set(5, 110);
     this.addChild(WbuttonZone);
     stage.addChild(this);
 };

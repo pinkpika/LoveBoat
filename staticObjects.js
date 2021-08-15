@@ -8,7 +8,7 @@ var fullDayStart = 8, fullDayEnd = 16, fullNightStart = 20, fullNightEnd = 4;
 
 var loveLightZone, loveLight;
 var sunZone, sunSheep, sunSheepLight, moonZone, moonPink;
-var sunStart = 6, sunEnd = 21, moonStart = 18 , moonEnd = 12;
+var sunStart = 6, sunEnd = 20, moonStart = 18 , moonEnd = 8;
 
 landZone = new Container();
 flowZone = new Container();
