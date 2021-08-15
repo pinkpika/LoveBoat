@@ -17,17 +17,19 @@ boatZone.setup = function(){
   setScale(this,0.8,true,1,-1);
   setRotation(this,0,true,4,-1);
   boat = new Sprite();
-  boat.oTexture = Texture.fromImage('http://i.imgur.com/B6MNMzM.png');
+  boat.oTexture = Texture.fromImage('https://i.imgur.com/nHWmiAr.png');
+  // boat.oTexture = Texture.fromImage('http://i.imgur.com/B6MNMzM.png');
   boat.texture = new PIXI.Texture(boat.oTexture, new PIXI.Rectangle(0, 0, 664, 210))
   boat.anchor.set(0.0, 0.0);
   boat.position.set(-332, -260);
   boat.on('pointerdown', onBoatDown);
   setHitArea(boat,0,120,640,140);
 
-  boatPaddle = new Sprite(Texture.fromImage('http://i.imgur.com/wSdBTV6.png'));
+  boatPaddle = new Sprite(Texture.fromImage('https://i.imgur.com/tSBSI1E.png'));
+  // boatPaddle = new Sprite(Texture.fromImage('http://i.imgur.com/wSdBTV6.png'));
   boatPaddle.anchor.set(0.5, 0.5);
   boatPaddle.position.set(150, -100);
-
+  
   comforter = new Sprite(Texture.fromImage('http://i.imgur.com/JKxQNwi.png'));
   comforter.position.set(-310,-250); comforter.scale.set(0.85);
   comforter.visible = false;
@@ -43,7 +45,8 @@ boatZone.setup = function(){
   boatBanbanZone.position.set(1000, 700);
   setScale(boatBanbanZone,0.8,true,1,-1);
   setRotation(boatBanbanZone,0,true,4,-1); 
-  banban = new Sprite(Texture.fromImage('http://i.imgur.com/LA2U7hy.png'));
+  // banban = new Sprite(Texture.fromImage('http://i.imgur.com/LA2U7hy.png'));
+  banban = new Sprite(Texture.fromImage('https://i.imgur.com/XfdC29b.png'));
   banban.anchor.set(0.5, 1.0);
   banban.pivot.set(0.0, 0.0);
   banban.position.set(30, -140);

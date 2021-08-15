@@ -1,4 +1,4 @@
-var isDebugHitArea = false, hitAreaRecs = [];
+var isDebugHitArea = true, hitAreaRecs = [];
 
 function debugSetupHitArea(){
 	for(var i = 0;i< hitAreaRecs.length;i++){

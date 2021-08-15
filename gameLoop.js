@@ -19,6 +19,7 @@ function allSetup() {
   moonZone.setup();
   message.setup();
   messageControl.setup();
+  settingTypeZone.setup();
 
   setupFireMode();
   setupParticleObjects();
@@ -41,6 +42,7 @@ function allSetup() {
   loveLightZone.zIndex = 500;
   message.zIndex = 1000;
   messageControl.zIndex = 1000;
+  settingTypeZone.zIndex = 1000;
   cameraZone.zIndex = 1000;
 
   if(isDebugHitArea) debugSetupHitArea();

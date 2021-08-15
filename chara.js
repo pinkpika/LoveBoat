@@ -1,53 +1,30 @@
-var charas = [];
-var sheepZone, sheep, sheepBright;
-sheepZone = new Container();
-var pinkZone, pink, pinkBright;
-pinkZone = new Container();
-
+// 睡覺時間
 var sleepTimeStart = 22, sleepTimeEnd = 8;
 
+// 相機物件
 var cameraZone, camera;
 cameraZone = new Container();
-
 cameraZone.setup = function(){
   this.textures = [];
   this.textures.push(Texture.fromImage('https://i.imgur.com/MNc8JYT.png'));
   this.position.set(0, 675);
   this.on('pointerdown', onCameraDown);
-  camera = new Sprite(this.textures[0]);
+  camera = new PIXI.Sprite(this.textures[0]);
   this.addChild(camera);
   setHitArea(this,0,40,300,200);
   setScale(this,0.5,true,1,-1);
   stage.addChild(this);
 }
 
+// 角色物件
+var charas = [];
+
+// 咩咩物件
+var sheepZone, sheep, sheepBright;
+sheepZone = new Container();
 sheepZone.setup = function(){
-  this.textures = [];
-	/*
-  this.textures.push(Texture.fromImage('http://i.imgur.com/i3mKQEx.png')); //sheep
-  this.textures.push(Texture.fromImage('http://i.imgur.com/qMolVry.png')); //sheepBright
-  this.textures.push(Texture.fromImage('http://i.imgur.com/kHDTsiU.png')); //sheepLove
-  this.textures.push(Texture.fromImage('http://i.imgur.com/Fxdv48h.gif')); //sheepDrag
-  this.textures.push(Texture.fromImage('http://i.imgur.com/vFVYoEH.png')); //sheepSleep
-  */
-  this.textures.push(Texture.fromImage('http://i.imgur.com/d9xILqY.png')); //sheepC
-  this.textures.push(Texture.fromImage('http://i.imgur.com/qMolVry.png')); //sheepBright
-  this.textures.push(Texture.fromImage('http://i.imgur.com/yoHDNdx.png')); //sheepLoveC
-  this.textures.push(Texture.fromImage('http://i.imgur.com/yoHDNdx.png')); //sheepDrag
-  this.textures.push(Texture.fromImage('http://i.imgur.com/mS7iyev.png')); //sheepSleepC
-  this.texturesO = [];
-	/*
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/i3mKQEx.png')); //sheep
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/qMolVry.png')); //sheepBright
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/kHDTsiU.png')); //sheepLove
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/Fxdv48h.gif')); //sheepDrag
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/vFVYoEH.png')); //sheepSleep
-  */
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/d9xILqY.png')); //sheepC
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/qMolVry.png')); //sheepBright
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/yoHDNdx.png')); //sheepLoveC
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/yoHDNdx.png')); //sheepDrag
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/mS7iyev.png')); //sheepSleepC
+  this.textures = getSheepTextures('W');
+  this.texturesO = getSheepTextures('W');
   this.pivot.set(110, 160); 
   this.position.set(1000, 200);
   this.on('pointerdown', onCharaDown).on('pointerup', onCharaUp)
@@ -74,33 +51,21 @@ sheepZone.setup = function(){
   setScale(this,0.8,true,1,-1);
   charas.push(this);
 };
+
+// 咩咩物件 - 重新設定Textures
+sheepZone.resetTextures = function(type){
+  this.textures = getSheepTextures(type);
+  this.texturesO = getSheepTextures(type);
+  sheep.setTexture(this.textures[0]);
+  sheepBright.setTexture(this.textures[1]);
+};
+
+// 果凍物件
+var pinkZone, pink, pinkBright;
+pinkZone = new Container();
 pinkZone.setup = function(){
-  this.textures = [];
-/*
-  this.textures.push(Texture.fromImage('http://i.imgur.com/Z5hkuz8.png')); //pink
-  this.textures.push(Texture.fromImage('http://i.imgur.com/ykXk0nY.png')); //pinkBright
-  this.textures.push(Texture.fromImage('http://i.imgur.com/8ymjOwl.png')); //pinkLove
-  this.textures.push(Texture.fromImage('http://i.imgur.com/ErJ36Xy.gif')); //pinkDrag
-  this.textures.push(Texture.fromImage('http://i.imgur.com/4rRwQpL.png')); //pinkSleep
-*/
-  this.textures.push(Texture.fromImage('http://i.imgur.com/AeuARUH.png')); //pinkC
-  this.textures.push(Texture.fromImage('http://i.imgur.com/ykXk0nY.png')); //pinkBright
-  this.textures.push(Texture.fromImage('http://i.imgur.com/ESwJe93.png')); //pinkLoveC
-  this.textures.push(Texture.fromImage('http://i.imgur.com/80A1hdv.png')); //pinkDragC
-  this.textures.push(Texture.fromImage('http://i.imgur.com/fSgszBo.png')); //pinkSleepC
-  this.texturesO = [];
-/*
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/Z5hkuz8.png')); //pink
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/ykXk0nY.png')); //pinkBright
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/8ymjOwl.png')); //pinkLove
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/ErJ36Xy.gif')); //pinkDrag
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/4rRwQpL.png')); //pinkSleep
-*/
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/AeuARUH.png')); //pinkC
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/ykXk0nY.png')); //pinkBright
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/ESwJe93.png')); //pinkLoveC
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/80A1hdv.png')); //pinkDragC
-  this.texturesO.push(Texture.fromImage('http://i.imgur.com/fSgszBo.png')); //pinkSleepC
+  this.textures = getPinkTextures('W');
+  this.texturesO = getPinkTextures('W');
   this.pivot.set(110, 160); 
   this.position.set(1170, 200);
   this.on('pointerdown', onCharaDown).on('pointerup', onCharaUp)
@@ -127,6 +92,15 @@ pinkZone.setup = function(){
   setScale(this,0.8,true,1,-1);
   charas.push(this);
 };
+
+// 果凍物件 - 重新設定Textures
+pinkZone.resetTextures = function(type){
+  this.textures = getPinkTextures(type);
+  this.texturesO = getPinkTextures(type);
+  pink.setTexture(this.textures[0]);
+  pinkBright.setTexture(this.textures[1]);
+};
+
 //------------------------------------------------------------------------------------------------
 function charaUpdate(){
   if(this.x > 2500.0){
