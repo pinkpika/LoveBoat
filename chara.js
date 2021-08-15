@@ -23,15 +23,14 @@ var charas = [];
 var sheepZone, sheep, sheepBright;
 sheepZone = new Container();
 sheepZone.setup = function(){
-  this.textures = getSheepTextures('W');
-  this.texturesO = getSheepTextures('W');
   this.pivot.set(110, 160); 
   this.position.set(1000, 200);
   this.on('pointerdown', onCharaDown).on('pointerup', onCharaUp)
       .on('pointerupoutside', onCharaUp).on('pointermove', onCharaDragMove)
       .on('pointerover', onCharaOver).on('pointerout', onCharaOut);
-  sheep = new Sprite(this.textures[0]);
-  sheepBright = new Sprite(this.textures[1]);
+  sheep = new Sprite();
+  sheepBright = new Sprite();
+  this.resetTextures(nowType);
   this.addChild(sheepBright);
   this.addChild(sheep);
   stage.addChild(this);
@@ -64,15 +63,14 @@ sheepZone.resetTextures = function(type){
 var pinkZone, pink, pinkBright;
 pinkZone = new Container();
 pinkZone.setup = function(){
-  this.textures = getPinkTextures('W');
-  this.texturesO = getPinkTextures('W');
   this.pivot.set(110, 160); 
   this.position.set(1170, 200);
   this.on('pointerdown', onCharaDown).on('pointerup', onCharaUp)
           .on('pointerupoutside', onCharaUp).on('pointermove', onCharaDragMove)
           .on('pointerover', onCharaOver).on('pointerout', onCharaOut);
-  pink = new Sprite(this.textures[0]);
-  pinkBright = new Sprite(this.textures[1]);
+  pink = new Sprite();
+  pinkBright = new Sprite();
+  this.resetTextures(nowType);
   this.addChild(pinkBright);
   this.addChild(pink);
   stage.addChild(this);

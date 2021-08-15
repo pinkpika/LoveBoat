@@ -6,11 +6,12 @@ useMessageButton.setup = function(){
 
     var bg = new PIXI.Graphics();
     bg.beginFill(0x000000, 0.5);
-    bg.drawRoundedRect(0,0,240,65,15);
+    bg.drawRoundedRect(0,0,240,66,20);
     this.addChild(bg);
 
-    var text = new PIXI.Text("[使用說明]", {font: "48px sans-serif", fill: "white"} );
-    text.position.set(5, 5);
+    var text = new PIXI.Text("[操作說明]", {font: "42px sans-serif", fill: "white"} );
+    text.anchor.set(0.5);
+    text.position.set(120, 33);
     this.addChild(text);
 
     this.isShow = false;
@@ -25,7 +26,7 @@ useMessageButton.setup = function(){
 
 useMessageZone.setup = function(){
 
-    this.position.set(useMessageButton.x, useMessageButton.y + useMessageButton.hitArea.height);
+    this.position.set(useMessageButton.x, useMessageButton.y + useMessageButton.hitArea.height + 5);
 
     var bg = new PIXI.Graphics();
     bg.beginFill(0x000000, 0.3);

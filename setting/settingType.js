@@ -1,3 +1,4 @@
+var nowType = 'W'
 var settingTypeButton = new Container();
 var settingTypeZone = new Container();
 var NbuttonZone = new Container();
@@ -9,11 +10,12 @@ settingTypeButton.setup = function(){
 
     var bg = new PIXI.Graphics();
     bg.beginFill(0x000000, 0.5);
-    bg.drawRoundedRect(0,0,240,65,15);
+    bg.drawRoundedRect(0,0,240,66,20);
     this.addChild(bg);
 
-    var text = new PIXI.Text("[設定服裝]", {font: "48px sans-serif", fill: "white"} );
-    text.position.set(5, 5);
+    var text = new PIXI.Text("[設定服裝]", {font: "42px sans-serif", fill: "white"} );
+    text.anchor.set(0.5);
+    text.position.set(120, 33);
     this.addChild(text);
 
     this.isShow = false;
@@ -28,27 +30,27 @@ settingTypeButton.setup = function(){
 
 settingTypeZone.setup = function(){
 
-    this.position.set(settingTypeButton.x, settingTypeButton.y + settingTypeButton.hitArea.height);
+    this.position.set(settingTypeButton.x, settingTypeButton.y + settingTypeButton.hitArea.height+ 5);
 
     var bg = new PIXI.Graphics();
     bg.beginFill(0x000000, 0.3);
-    bg.drawRoundedRect(0,0,300,170,15);
+    bg.drawRoundedRect(0,0,300,180,15);
     this.addChild(bg);
 
     NbuttonZone.setup();
-    NbuttonZone.position.set(5, 5);
+    NbuttonZone.position.set(5, 10);
     this.addChild(NbuttonZone);
     CbuttonZone.setup();
-    CbuttonZone.position.set(5, 60);
+    CbuttonZone.position.set(5, 65);
     this.addChild(CbuttonZone);
     WbuttonZone.setup();
-    WbuttonZone.position.set(5, 110);
+    WbuttonZone.position.set(5, 120);
     this.addChild(WbuttonZone);
     stage.addChild(this);
 };
 
 NbuttonZone.setup = function(){
-    var NbuttonText = new PIXI.Text("❤️ Normal", {font: "48px sans-serif", fill: "white"} );
+    var NbuttonText = new PIXI.Text("❤️ Normal", {font: "42px sans-serif", fill: "white"} );
     NbuttonText.position.set(0, 0);
     this.addChild(NbuttonText);
     this.on('pointerdown', function(e) { clickButton('N'); });
@@ -56,7 +58,7 @@ NbuttonZone.setup = function(){
 };
 
 CbuttonZone.setup = function(){
-    var CbuttonText = new PIXI.Text("🍫 Valentine", {font: "48px sans-serif", fill: "white"} );
+    var CbuttonText = new PIXI.Text("🍫 Valentine", {font: "42px sans-serif", fill: "white"} );
     CbuttonText.position.set(0, 0);
     this.addChild(CbuttonText);
     this.on('pointerdown', function(e) { clickButton('C'); });
@@ -64,7 +66,7 @@ CbuttonZone.setup = function(){
 };
 
 WbuttonZone.setup = function(){
-    var WbuttonText = new PIXI.Text("💍 Wedding", {font: "48px sans-serif", fill: "white"} );
+    var WbuttonText = new PIXI.Text("💍 Wedding", {font: "42px sans-serif", fill: "white"} );
     WbuttonText.position.set(0, 0);
     this.addChild(WbuttonText);
     this.on('pointerdown', function(e) { clickButton('W'); });
@@ -72,6 +74,8 @@ WbuttonZone.setup = function(){
 };
 
 function clickButton(type) {
+    nowType = type
     sheepZone.resetTextures(type);
     pinkZone.resetTextures(type);
+    boatZone.resetTextures(type);
 }
