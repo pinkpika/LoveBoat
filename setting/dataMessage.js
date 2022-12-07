@@ -1,9 +1,9 @@
 var dataMessageZone = new Container();
 var dataMessage;
 var nowDate = new Date();
-var endTime = '2016-5-18 00:00:00'; // 愛之船出航日
-endTime = endTime.replace(/\-/g, '/');
-var goBoatDate = new Date(endTime);
+var goBoatDateString = config["goBoatDate"];
+goBoatDateString = goBoatDateString.replace(/\-/g, '/');
+var goBoatDate = new Date(goBoatDateString);
 var spantime, d, h, m, s;
 
 dataMessageZone.setup = function(){
@@ -27,6 +27,8 @@ dataMessageZone.update = function(){
   var monthCount = 12 * ( nowDate.getFullYear() - goBoatDate.getFullYear() ) +
     nowDate.getMonth() - goBoatDate.getMonth() ;
   if(nowDate.getDate()<18) monthCount -= 1;
-	dataMessage.text = "航行時間 : " +d+" 日 "+h+" 時 "+m+" 分 "+s+" 秒 (" + monthCount +"個月)";
+  dataMessage.text = "航行時間 : " +d+" 日 "+h+" 時 "+m+" 分 "+s+" 秒";
+  dataMessage.text += " (=" + monthCount + "個月)";
+  dataMessage.text += " (=" + Math.floor(monthCount / 12) + "年" + monthCount % 12 + "個月)";
   dataMessage.text += " / 收集愛之物(" + fireObjects.length + " 個)";
 };
