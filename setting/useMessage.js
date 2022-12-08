@@ -4,7 +4,7 @@ var useMessageZone = new Container();
 useMessageButton.setup = function(){
     this.position.set(260, 10);
 
-    var bg = new PIXI.Graphics();
+    let bg = new PIXI.Graphics();
     bg.beginFill(0x000000, 0.5);
     bg.drawRoundedRect(0,0,240,66,20);
     this.addChild(bg);
@@ -28,7 +28,7 @@ useMessageZone.setup = function(){
 
     this.position.set(useMessageButton.x, useMessageButton.y + useMessageButton.hitArea.height + 5);
 
-    var bg = new PIXI.Graphics();
+    let bg = new PIXI.Graphics();
     bg.beginFill(0x000000, 0.3);
     bg.drawRoundedRect(0,0,550,190,15);
     this.addChild(bg);
