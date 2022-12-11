@@ -1,6 +1,6 @@
 var dataMessageZone = new Container();
 var dataMessage;
-var h; // 目前的小時
+var h, m, s; // 目前的小時/分鐘/秒數
 
 dataMessageZone.setup = function(){
 
@@ -23,8 +23,8 @@ dataMessageZone.update = function(){
   let spantime = (nowDate.getTime() - goBoatDate)/1000;
   let d = Math.floor(spantime / (24 * 3600));
   h = Math.floor((spantime % (24*3600))/3600);
-	let m = Math.floor((spantime % 3600)/(60));
-	let s = Math.floor(spantime%60);
+	m = Math.floor((spantime % 3600)/(60));
+	s = Math.floor(spantime%60);
   let monthCount = 12 * ( nowDate.getFullYear() - goBoatDate.getFullYear() ) +
     nowDate.getMonth() - goBoatDate.getMonth() ;
   if(nowDate.getDate()<18) monthCount -= 1;
