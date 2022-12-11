@@ -8,6 +8,7 @@ var boatPaddleRo = 0.0;
 
 var pLoveBoatBanbanTimeO = 1 , pLoveBoatBanbanTime = pLoveBoatBanbanTimeO;
 
+// 床頭櫃/枕頭/棉被
 var headboard, pillowA, pillowB, comforter;
 
 boatZone.setup = function(){
@@ -26,7 +27,7 @@ boatZone.setup = function(){
   boatPaddle.anchor.set(0.5, 0.5);
   boatPaddle.position.set(150, -100);
   
-  comforter = new Sprite(Texture.fromImage('http://i.imgur.com/JKxQNwi.png'));
+  comforter = new Sprite();
   comforter.position.set(-310,-250); comforter.scale.set(0.85);
   comforter.visible = false;
 
@@ -48,13 +49,13 @@ boatZone.setup = function(){
   boatBanbanZone.addChild(banban);
   stage.addChild(boatBanbanZone);
 
-  headboard = new Sprite(Texture.fromImage('http://i.imgur.com/iQZ8DDW.png'));
+  headboard = new Sprite();
   headboard.position.set(-310,-330); headboard.scale.set(0.85);
   headboard.visible = false;
-  pillowA = new Sprite(Texture.fromImage('http://i.imgur.com/fMqThnD.png'));
+  pillowA = new Sprite();
   pillowA.position.set(-250,-300); pillowA.scale.set(0.85);
   pillowA.visible = false;
-  pillowB = new Sprite(pillowA.texture);
+  pillowB = new Sprite();
   pillowB.position.set(150,-250); pillowB.scale.set(0.85);
   pillowB.visible = false;
   boatBanbanZone.addChild(headboard);
@@ -67,7 +68,7 @@ boatZone.setup = function(){
   boatFlagZone.position.set(1000, 700);
   setScale(boatFlagZone,0.8,true,1,-1);
   setRotation(boatFlagZone,0,true,4,-1); 
-  flag = new Sprite(Texture.fromImage('http://i.imgur.com/YdzjFUh.png'));
+  flag = new Sprite();
   flag.anchor.set(0.5, 1.0);
   flag.pivot.set(0.0, 0.0);
   flag.position.set(200, -400);
@@ -82,21 +83,22 @@ boatZone.setup = function(){
 };
 
 boatZone.resetTextures = function(type){
-  switch (type) {
-    case 'N':
-    case 'C':
-      boat.oTexture = Texture.fromImage('http://i.imgur.com/B6MNMzM.png');
+  for (var index in config.settingTypes) {
+    if (config.settingTypes[index].type == type){
+      
+      let boatImages = config.settingTypes[index].boatImages;
+
+      boat.oTexture = Texture.fromImage(boatImages[0]);
       boat.texture = new PIXI.Texture(boat.oTexture, new PIXI.Rectangle(0, 0, 664, 210))
-      boatPaddle.texture = Texture.fromImage('http://i.imgur.com/wSdBTV6.png');
-      banban.texture = Texture.fromImage('http://i.imgur.com/LA2U7hy.png');
-      break;
-    case 'W':
-      boat.oTexture = Texture.fromImage('https://i.imgur.com/nHWmiAr.png');
-      boat.texture = new PIXI.Texture(boat.oTexture, new PIXI.Rectangle(0, 0, 664, 210));
-      boatPaddle.texture = Texture.fromImage('https://i.imgur.com/tSBSI1E.png');
-      banban.texture = Texture.fromImage('https://i.imgur.com/XfdC29b.png');
-      break;
+      boatPaddle.texture = Texture.fromImage(boatImages[1]);
+      banban.texture = Texture.fromImage(boatImages[2]);
+      flag.texture = Texture.fromImage(boatImages[3]);
+
+      headboard.texture = Texture.fromImage(boatImages[4]);
+      pillowA.texture = Texture.fromImage(boatImages[5]);
+      comforter.texture = Texture.fromImage(boatImages[6]);
     }
+  }
 };
 
 boatZone.update = function(){
