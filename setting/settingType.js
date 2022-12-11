@@ -31,7 +31,7 @@ settingTypeZone.setup = function(){
 
     let bg = new PIXI.Graphics();
     bg.beginFill(0x000000, 0.3);
-    bg.drawRoundedRect(0,0,300,180,15);
+    bg.drawRoundedRect(0,0,300,60*config.settingTypes.length,15);
     this.addChild(bg);
 
     for (var index in config.settingTypes) {

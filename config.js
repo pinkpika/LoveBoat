@@ -81,6 +81,10 @@ var config = {
                 "https://i.imgur.com/fMqThnD.png",
                 "https://i.imgur.com/JKxQNwi.png",
             ]
+        },
+        {
+            type: "Christmas",
+            title: "🎄 X'mas",
         }
     ]
 };
